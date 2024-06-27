@@ -20,8 +20,6 @@ public class InGameHudMixin {
     @Final
     @Shadow
     private final DebugHud debugHud;
-    @Unique
-    MinecraftClient client = MinecraftClient.getInstance();
 
     public InGameHudMixin(DebugHud debugHud) {
         this.debugHud = debugHud;
@@ -70,15 +68,13 @@ public class InGameHudMixin {
         if (OverlayTweaksConfig.CONFIG.instance().removeItemTooltip) ci.cancel();
     }
 
-    @Inject(method = "renderScoreboardSidebar(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/scoreboard/ScoreboardObjective;)V", at = @At("HEAD"), cancellable = true)
-    private void removeScoreboardInDebug(CallbackInfo ci) {
-        //#if MC >= 1.20.4
-        if (OverlayTweaksConfig.CONFIG.instance().hideScoreboardInDebug && client.getDebugHud().shouldShowDebugHud()) {
-        //#else
-        //$$ if (OverlayTweaksConfig.CONFIG.instance().hideScoreboardInDebug && MinecraftClient.getInstance().options.debugEnabled) {
-        //#endif
-            ci.cancel();
-        }
-    }
+    //#if MC <= 1.20.1
+    //$$ @Inject(method = "renderScoreboardSidebar(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/scoreboard/ScoreboardObjective;)V", at = @At("HEAD"), cancellable = true)
+    //$$ private void removeScoreboardInDebug(CallbackInfo ci) {
+    //$$    if (OverlayTweaksConfig.CONFIG.instance().hideScoreboardInDebug && MinecraftClient.getInstance().options.debugEnabled) {
+    //$$         ci.cancel();
+    //$$    }
+    //$$ }
+    //#endif
 
 }

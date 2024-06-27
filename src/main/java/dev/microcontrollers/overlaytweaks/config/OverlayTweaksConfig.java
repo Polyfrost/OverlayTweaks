@@ -56,7 +56,9 @@ public class OverlayTweaksConfig {
     @SerialEntry public float customFireOverlayOpacity = 100F;
     @SerialEntry public boolean removeItemTooltip = false;
     @SerialEntry public boolean keepHand = false;
+    //#if MC <= 1.20.1
     @SerialEntry public boolean hideScoreboardInDebug = false;
+    //#endif
     @SerialEntry public boolean classicDebugStyle = false;
     @SerialEntry public Color subtitleColor = new Color(0F, 0F, 0F, 1F);
 
@@ -345,12 +347,14 @@ public class OverlayTweaksConfig {
 
                         .group(OptionGroup.createBuilder()
                                 .name(Text.literal("Debug"))
-                                .option(Option.createBuilder(boolean.class)
-                                        .name(Text.literal("Hide Scoreboard In Debug Menu"))
-                                        .description(OptionDescription.of(Text.of("Removes the scoreboard when you have the F3 menu open.")))
-                                        .binding(defaults.hideScoreboardInDebug, () -> config.hideScoreboardInDebug, newVal -> config.hideScoreboardInDebug = newVal)
-                                        .controller(TickBoxControllerBuilder::create)
-                                        .build())
+                                //#if MC <= 1.20.1
+                                //$$ .option(Option.createBuilder(boolean.class)
+                                //$$         .name(Text.literal("Hide Scoreboard In Debug Menu"))
+                                //$$         .description(OptionDescription.of(Text.of("Removes the scoreboard when you have the F3 menu open.")))
+                                //$$         .binding(defaults.hideScoreboardInDebug, () -> config.hideScoreboardInDebug, newVal -> config.hideScoreboardInDebug = newVal)
+                                //$$         .controller(TickBoxControllerBuilder::create)
+                                //$$         .build())
+                                //#endif
                                 .option(Option.createBuilder(boolean.class)
                                         .name(Text.literal("Classic Debug Style"))
                                         .description(OptionDescription.of(Text.of("Removes the background of the F3 text and renders the text with a shadow instead.")))

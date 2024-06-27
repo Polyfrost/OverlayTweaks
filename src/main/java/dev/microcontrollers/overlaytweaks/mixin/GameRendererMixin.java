@@ -10,6 +10,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.client.util.Window;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -86,7 +87,11 @@ public class GameRendererMixin {
     }
 
     @Inject(method = "renderFloatingItem", at = @At("HEAD"))
-    private void changeTotemTime(int scaledWidth, int scaledHeight, float tickDelta, CallbackInfo ci) {
+    //#if MC >= 1.21
+    private void changeTotemTime(DrawContext context, float tickDelta, CallbackInfo ci) {
+    //#else
+    //$$ private void changeTotemTime(int scaledWidth, int scaledHeight, float tickDelta, CallbackInfo ci) {
+    //#endif
         if (OverlayTweaksConfig.CONFIG.instance().disableTotemOverlay && this.floatingItem != null && this.floatingItem.isOf(Items.TOTEM_OF_UNDYING)) this.floatingItemTimeLeft = 0;
     }
 
@@ -113,11 +118,11 @@ public class GameRendererMixin {
         return (int) (mouseY / InvScale.getScale());
     }
 
-    // ignore the error about method params
-    @SuppressWarnings("InvalidInjectorMethodSignature")
     @Inject(method = "render", at = @At(value = "FIELD", opcode = Opcodes.GETFIELD, target = "Lnet/minecraft/client/MinecraftClient;currentScreen:Lnet/minecraft/client/gui/screen/Screen;", shift = At.Shift.BEFORE, ordinal = 1), locals = LocalCapture.CAPTURE_FAILHARD)
-    //#if MC >= 1.20.6
-    private void onScreenRenderPre(float tickDelta, long startTime, boolean tick, CallbackInfo ci, float f, boolean bl, int i, int j, Window window, Matrix4f matrix4f, Matrix4fStack matrix4fStack, DrawContext drawContext) {
+    //#if MC >= 1.21
+    private void onScreenRenderPre(RenderTickCounter tickCounter, boolean tick, CallbackInfo ci, boolean bl, int i, int j, Window window, Matrix4f matrix4f, Matrix4fStack matrix4fStack, DrawContext drawContext) {
+    //#elseif MC == 1.20.6
+    //$$ private void onScreenRenderPre(float tickDelta, long startTime, boolean tick, CallbackInfo ci, float f, boolean bl, int i, int j, Window window, Matrix4f matrix4f, Matrix4fStack matrix4fStack, DrawContext drawContext) {
     //#elseif MC == 1.20.4
     //$$ private void onScreenRenderPre(float tickDelta, long startTime, boolean tick, CallbackInfo ci, float f, boolean bl, int i, int j, Window window, Matrix4f matrix4f, MatrixStack matrixStack, DrawContext drawContext) {
     //#else
@@ -127,11 +132,11 @@ public class GameRendererMixin {
         drawContext.getMatrices().scale(InvScale.getScale(), InvScale.getScale(), 1f);
     }
 
-    // ignore the error about method params
-    @SuppressWarnings("InvalidInjectorMethodSignature")
     @Inject(method = "render", at = @At(value = "FIELD", opcode = Opcodes.GETFIELD, target = "Lnet/minecraft/client/MinecraftClient;currentScreen:Lnet/minecraft/client/gui/screen/Screen;", shift = At.Shift.AFTER, ordinal = 3), locals = LocalCapture.CAPTURE_FAILHARD)
-    //#if MC >= 1.20.6
-    private void onScreenRenderPost(float tickDelta, long startTime, boolean tick, CallbackInfo ci, float f, boolean bl, int i, int j, Window window, Matrix4f matrix4f, Matrix4fStack matrix4fStack, DrawContext drawContext) {
+    //#if MC >= 1.21
+    private void onScreenRenderPost(RenderTickCounter tickCounter, boolean tick, CallbackInfo ci, boolean bl, int i, int j, Window window, Matrix4f matrix4f, Matrix4fStack matrix4fStack, DrawContext drawContext) {
+    //#elseif MC == 1.20.6
+    //$$ private void onScreenRenderPost(float tickDelta, long startTime, boolean tick, CallbackInfo ci, float f, boolean bl, int i, int j, Window window, Matrix4f matrix4f, Matrix4fStack matrix4fStack, DrawContext drawContext) {
     //#elseif MC == 1.20.4
     //$$ private void onScreenRenderPost(float tickDelta, long startTime, boolean tick, CallbackInfo ci, float f, boolean bl, int i, int j, Window window, Matrix4f matrix4f, MatrixStack matrixStack, DrawContext drawContext) {
     //#else

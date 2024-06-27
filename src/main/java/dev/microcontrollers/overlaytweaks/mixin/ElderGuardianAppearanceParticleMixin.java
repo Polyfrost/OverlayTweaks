@@ -13,7 +13,11 @@ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(ElderGuardianAppearanceParticle.class)
 public class ElderGuardianAppearanceParticleMixin {
-    @ModifyArg(method = "buildGeometry", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/Model;render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;IIFFFF)V"), index = 7)
+    //#if MC >= 1.21
+    @ModifyArg(method = "buildGeometry", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/ColorHelper$Argb;fromFloats(FFFF)I"), index = 0)
+    //#else
+    //$$ @ModifyArg(method = "buildGeometry", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/Model;render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;IIFFFF)V"), index = 7)
+    //#endif
     private float changeElderGuardianOpacity(float g) {
         return g * OverlayTweaksConfig.CONFIG.instance().elderGuardianOpacity / 100F / 0.55F;
     }
