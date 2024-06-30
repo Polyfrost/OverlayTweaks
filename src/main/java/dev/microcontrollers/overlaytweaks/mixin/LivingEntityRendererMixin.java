@@ -15,6 +15,7 @@ import net.minecraft.entity.passive.CamelEntity;
 import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.entity.passive.StriderEntity;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.ColorHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -30,7 +31,7 @@ public class LivingEntityRendererMixin<T extends LivingEntity> {
         // TODO: fix pig saddles
         assert MinecraftClient.getInstance().player != null;
         if (MinecraftClient.getInstance().player.hasVehicle() &&
-                ((OverlayTweaksConfig.CONFIG.instance().horseOpacity != 100  && texture.toString().contains("horse")) ||
+                ((OverlayTweaksConfig.CONFIG.instance().horseOpacity != 100 && texture.toString().contains("horse")) ||
                 (OverlayTweaksConfig.CONFIG.instance().pigOpacity != 100 && texture.toString().contains("pig")) ||
                 (OverlayTweaksConfig.CONFIG.instance().striderOpacity != 100 && texture.toString().contains("strider")) ||
                 (OverlayTweaksConfig.CONFIG.instance().camelOpacity != 100 && texture.toString().contains("camel")))) {
@@ -46,13 +47,29 @@ public class LivingEntityRendererMixin<T extends LivingEntity> {
     //#endif
     private void transparentRiddenEntity(Args args, T livingEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
         if (livingEntity instanceof AbstractHorseEntity && livingEntity.hasPassenger(MinecraftClient.getInstance().player) && OverlayTweaksConfig.CONFIG.instance().horseOpacity != 0) {
-            args.set(7, OverlayTweaksConfig.CONFIG.instance().horseOpacity / 100F);
+            //#if MC >= 1.21
+            args.set(4, ColorHelper.Argb.fromFloats(OverlayTweaksConfig.CONFIG.instance().horseOpacity / 100F, 1.0F, 1.0F, 1.0F));
+            //#else
+            //$$ args.set(7, OverlayTweaksConfig.CONFIG.instance().horseOpacity / 100F);
+            //#endif
         } else if (livingEntity instanceof PigEntity && livingEntity.hasPassenger(MinecraftClient.getInstance().player) && OverlayTweaksConfig.CONFIG.instance().pigOpacity != 0) {
-            args.set(7, OverlayTweaksConfig.CONFIG.instance().pigOpacity / 100F);
+            //#if MC >= 1.21
+            args.set(4, ColorHelper.Argb.fromFloats(OverlayTweaksConfig.CONFIG.instance().pigOpacity / 100F, 1.0F, 1.0F, 1.0F));
+            //#else
+            //$$ args.set(7, OverlayTweaksConfig.CONFIG.instance().pigOpacity / 100F);
+            //#endif
         } else if (livingEntity instanceof StriderEntity && livingEntity.hasPassenger(MinecraftClient.getInstance().player) && OverlayTweaksConfig.CONFIG.instance().striderOpacity != 0) {
-            args.set(7, OverlayTweaksConfig.CONFIG.instance().striderOpacity / 100F);
+            //#if MC >= 1.21
+            args.set(4, ColorHelper.Argb.fromFloats(OverlayTweaksConfig.CONFIG.instance().striderOpacity / 100F, 1.0F, 1.0F, 1.0F));
+            //#else
+            //$$ args.set(7, OverlayTweaksConfig.CONFIG.instance().striderOpacity / 100F);
+            //#endif
         } else if (livingEntity instanceof CamelEntity && livingEntity.hasPassenger(MinecraftClient.getInstance().player) && OverlayTweaksConfig.CONFIG.instance().camelOpacity != 0) {
-            args.set(7, OverlayTweaksConfig.CONFIG.instance().camelOpacity / 100F);
+            //#if MC >= 1.21
+            args.set(4, ColorHelper.Argb.fromFloats(OverlayTweaksConfig.CONFIG.instance().camelOpacity / 100F, 1.0F, 1.0F, 1.0F));
+            //#else
+            //$$ args.set(7, OverlayTweaksConfig.CONFIG.instance().camelOpacity / 100F);
+            //#endif
         }
     }
 
