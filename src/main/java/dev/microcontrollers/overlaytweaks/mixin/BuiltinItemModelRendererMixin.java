@@ -53,8 +53,8 @@ public class BuiltinItemModelRendererMixin {
     //#if MC < 1.21
     //$$ @ModifyArgs(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/ModelPart;render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;IIFFFF)V"))
     //$$ private void changeShieldColorAndTransparency(Args args, ItemStack stack, ModelTransformationMode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+    //$$     if (MinecraftClient.getInstance().player == null) return;
     //$$     ClientPlayerEntity player = MinecraftClient.getInstance().player;
-    //$$     assert player != null;
     //$$     float cooldown = player.getItemCooldownManager().getCooldownProgress(Items.SHIELD, 0);
     //$$     // We want this to only change shields that are being held so it doesn't affect containers/dropped items, as well as first person only.
     //$$     if (mode == ModelTransformationMode.FIRST_PERSON_LEFT_HAND || mode == ModelTransformationMode.FIRST_PERSON_RIGHT_HAND
@@ -82,9 +82,8 @@ public class BuiltinItemModelRendererMixin {
     //#if MC >= 1.21
     @WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/ModelPart;render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;II)V"))
     private void changeShieldColorAndTransparencyPre(ModelPart instance, MatrixStack matrices, VertexConsumer vertices, int light, int overlay, Operation<Void> original, @Local(argsOnly = true) LocalRef<ModelTransformationMode> mode) {
-        ClientPlayerEntity player = MinecraftClient.getInstance().player;
-        assert player != null;
-        float cooldown = player.getItemCooldownManager().getCooldownProgress(Items.SHIELD, 0);
+        if (MinecraftClient.getInstance().player == null) return;
+        float cooldown = MinecraftClient.getInstance().player.getItemCooldownManager().getCooldownProgress(Items.SHIELD, 0);
         if (mode.get() == ModelTransformationMode.FIRST_PERSON_LEFT_HAND || mode.get() == ModelTransformationMode.FIRST_PERSON_RIGHT_HAND
                 && OverlayTweaksConfig.CONFIG.instance().customShieldOpacity != 0) {
             float alpha = OverlayTweaksConfig.CONFIG.instance().customShieldOpacity / 100;
