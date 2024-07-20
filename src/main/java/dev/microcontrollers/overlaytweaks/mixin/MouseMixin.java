@@ -45,5 +45,4 @@ public class MouseMixin {
     private int onMouseScrollHeight(int originalScaledHeight) {
         return (int) (originalScaledHeight / InvScale.getScale());
     }
-
 }

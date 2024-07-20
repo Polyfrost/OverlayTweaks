@@ -12,5 +12,4 @@ public class SubtitlesHudMixin {
     private int modifySubtitleColor(int original) {
         return OverlayTweaksConfig.CONFIG.instance().subtitleColor.getRGB();
     }
-
 }

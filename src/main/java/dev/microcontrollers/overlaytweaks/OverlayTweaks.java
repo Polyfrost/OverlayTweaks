@@ -8,5 +8,4 @@ public class OverlayTweaks implements ModInitializer {
 	public void onInitialize() {
 		OverlayTweaksConfig.CONFIG.load();
 	}
-
 }

@@ -4,11 +4,12 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
-import com.mojang.blaze3d.systems.RenderSystem;
 import dev.microcontrollers.overlaytweaks.config.OverlayTweaksConfig;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.model.ModelPart;
-import net.minecraft.client.network.ClientPlayerEntity;
+//#if MC < 1.21
+//$$ import net.minecraft.client.network.ClientPlayerEntity;
+//#endif
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -23,9 +24,13 @@ import net.minecraft.util.math.ColorHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArgs;
+//#if MC < 1.21
+//$$ import org.spongepowered.asm.mixin.injection.ModifyArgs;
+//#endif
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
+//#if MC < 1.21
+//$$ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
+//#endif
 
 /*
     This code was taken and modified from Show Me Your Skin! under the MIT license https://github.com/enjarai/show-me-your-skin/blob/master/LICENSE
@@ -110,5 +115,4 @@ public class BuiltinItemModelRendererMixin {
         original.call(instance, matrices, vertices, light, overlay);
     }
     //#endif
-
 }

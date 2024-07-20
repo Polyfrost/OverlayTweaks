@@ -35,5 +35,4 @@ public class ElderGuardianAppearanceParticleMixin {
         args.set(1, -OverlayTweaksConfig.CONFIG.instance().elderGuardianScale);
         args.set(2, OverlayTweaksConfig.CONFIG.instance().elderGuardianScale);
     }
-
 }

@@ -31,9 +31,11 @@ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(value = GameRenderer.class, priority = 1001)
 public class GameRendererMixin {
-    @Shadow private int floatingItemTimeLeft;
-
-    @Shadow @Nullable private ItemStack floatingItem;
+    @Shadow
+    private int floatingItemTimeLeft;
+    @Shadow
+    @Nullable
+    private ItemStack floatingItem;
 
     @ModifyExpressionValue(method = "getFov", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;lerp(DDD)D"))
     private double removeWaterFov(double original) {
@@ -144,5 +146,4 @@ public class GameRendererMixin {
     //#endif
         drawContext.getMatrices().pop();
     }
-
 }

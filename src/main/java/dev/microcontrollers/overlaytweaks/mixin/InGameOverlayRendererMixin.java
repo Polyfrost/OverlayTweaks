@@ -62,5 +62,4 @@ public class InGameOverlayRendererMixin {
         args.set(1, OverlayTweaksConfig.CONFIG.instance().suffocationOverlayBrightness / 100F);
         args.set(2, OverlayTweaksConfig.CONFIG.instance().suffocationOverlayBrightness / 100F);
     }
-
 }

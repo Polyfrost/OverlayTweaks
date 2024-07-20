@@ -22,5 +22,4 @@ public class EnchantmentScreenMixin {
         RenderSystem.disableBlend();
         RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
     }
-
 }

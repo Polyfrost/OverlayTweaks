@@ -46,5 +46,4 @@ public class LoomScreenMixin {
     //#endif
         matrixStack.scale(InvScale.getScale(), InvScale.getScale(), 1F);
     }
-
 }

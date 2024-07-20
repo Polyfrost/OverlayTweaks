@@ -546,5 +546,4 @@ public class OverlayTweaksConfig {
                         .build())
         )).generateScreen(parent);
     }
-
 }

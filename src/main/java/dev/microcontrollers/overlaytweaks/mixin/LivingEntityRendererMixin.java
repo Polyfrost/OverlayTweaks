@@ -83,5 +83,4 @@ public class LivingEntityRendererMixin<T extends LivingEntity> {
         }
 
     }
-
 }

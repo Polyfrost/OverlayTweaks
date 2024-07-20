@@ -12,5 +12,4 @@ public class WorldRendererMixin {
     private int changeWorldBorderColor(int original) {
         return OverlayTweaksConfig.CONFIG.instance().worldBorderColor.getRGB();
     }
-
 }

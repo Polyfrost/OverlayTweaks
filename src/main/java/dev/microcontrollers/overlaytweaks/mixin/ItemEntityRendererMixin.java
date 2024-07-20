@@ -28,5 +28,4 @@ public class ItemEntityRendererMixin {
         if (OverlayTweaksConfig.CONFIG.instance().unstackedItems) return 1;
         return original;
     }
-
 }

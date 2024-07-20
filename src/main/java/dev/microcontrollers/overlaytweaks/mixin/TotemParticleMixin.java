@@ -20,5 +20,4 @@ public class TotemParticleMixin extends AnimatedParticle {
     private void removeTotemParticleAge(ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, SpriteProvider spriteProvider, CallbackInfo ci) {
         if (OverlayTweaksConfig.CONFIG.instance().disableTotemParticles) this.scale = 0;
     }
-
 }

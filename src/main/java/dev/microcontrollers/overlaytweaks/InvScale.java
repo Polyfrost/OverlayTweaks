@@ -16,5 +16,4 @@ public class InvScale {
         }
         return 1F;
     }
-
 }

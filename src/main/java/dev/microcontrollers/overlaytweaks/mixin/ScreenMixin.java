@@ -71,5 +71,4 @@ public class ScreenMixin {
         this.width = (int) ceil((double) width / InvScale.getScale());
         this.height = (int) ceil((double) height / InvScale.getScale());
     }
-
 }

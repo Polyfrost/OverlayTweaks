@@ -2,13 +2,17 @@ package dev.microcontrollers.overlaytweaks.mixin;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.microcontrollers.overlaytweaks.config.OverlayTweaksConfig;
-import net.minecraft.client.MinecraftClient;
+//#if MC <= 1.20.1
+//$$ import net.minecraft.client.MinecraftClient;
+//#endif
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.DebugHud;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.entity.Entity;
-import net.minecraft.text.Text;
-import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Mutable;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
@@ -76,5 +80,4 @@ public class InGameHudMixin {
     //$$    }
     //$$ }
     //#endif
-
 }

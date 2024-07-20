@@ -31,5 +31,4 @@ public class HeldItemRendererMixin {
     private boolean removeHandSway(MatrixStack instance, Quaternionf quaternion) {
         return !OverlayTweaksConfig.CONFIG.instance().disableHandViewSway;
     }
-
 }

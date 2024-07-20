@@ -19,5 +19,4 @@ public class DebugHudMixin {
     private boolean addDebugShadow(boolean shadow) {
         return OverlayTweaksConfig.CONFIG.instance().classicDebugStyle;
     }
-
 }
