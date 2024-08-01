@@ -12,44 +12,23 @@ Contributing software and their licenses can be found at [OPEN_SOURCE_SOFTWARE.m
 
 ## Features
 
-### Screens
+### Miscellaneous
 
 #### Containers
 
 - Container Background Opacity
 - Container Texture Opacity
-- Container Scale
 
-#### Screen Shake
+#### Hand
 
-- Disable Screen Bobbing
-- Disable Hand Bobbing
-- Disable Map Bobbing
-- Disable Screen Damage Tilt
-- Disable Hand Damage Tilt
 - Disable Hand View Sway
+- Keep Hand in Hidden HUD
 
 #### Tab Background (1.20.4 and prior only)
 
 - Tab Background Opacity
 
-#### Suffocation Overlay
-
-- Suffocation Overlay Brightness
-
 ### HUD
-
-#### Shield
-
-- Shield Height
-- Shield Opacity
-- Color Shield Cooldown
-
-#### Totem
-
-- Disable Totem Overlay
-- Disable Totem Particles
-- Totem Scale
 
 #### Water
 
@@ -62,36 +41,19 @@ Contributing software and their licenses can be found at [OPEN_SOURCE_SOFTWARE.m
 - Fire Overlay Height
 - Fire Overlay Opacity
 
-#### Hotbar
+#### Elements
 
 - Remove Held Item Name Tooltip
-- Keep Hand in Hidden HUD
-
-#### Debug
-
-- Hide Scoreboard in Debug
+- Hide Scoreboard in Debug (1.20.1 and prior only)
 - Classic Debug Style
+- Subtitle Background Color
 
 ### Effects
 
-#### Items
+#### Elder Guardian
 
-- Potion Glint
-- Static Items
-- Unstacked Items
-
-#### World
-
-- Cleaner Night Vision Decay
-- Cleaner Sky Void Darkness
-- Lightning Bolt Color
-- World Border Color
 - Elder Guardian Opacity
 - Elder Guardian Scale
-- Ridden Horse Opacity
-- Ridden Pig Opacity
-- Ridden Strider Opacity
-- Ridden Camel Opacity
 
 #### Full Screen Effects
 
@@ -101,3 +63,22 @@ Contributing software and their licenses can be found at [OPEN_SOURCE_SOFTWARE.m
 - Spyglass Background Color
 - Constant Vignette Darkness
 - Constant Vignette Darkness Value
+- Suffocation Overlay Brightness
+
+### Items
+
+#### Shield
+
+#### Shield
+
+- Shield Height
+- Shield Opacity
+- Color Shield Cooldown
+
+#### Potions
+
+- Potion Glint
+
+## Modpack?
+
+If you want to use my mods in a Modpack, I ask that the modpack is only available on Modrinth. Feel free to reach out to me if you would like to discuss further.

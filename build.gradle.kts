@@ -38,9 +38,6 @@ loom {
 }
 
 dependencies {
-	// Mixin Extras because PGT doesn't include it
-	implementation(annotationProcessor(libs.mixinextras.get())!!)
-
 	val modMenuVersion = when(platform.mcVersion) {
 		12001 -> "7.2.2"
 		12004 -> "9.2.0-beta.2"
@@ -68,6 +65,9 @@ dependencies {
 
 	// DevAuth. Lets us log in with our own Minecraft account. Useful for testing tab features.
 	modRuntimeOnly("me.djtheredstoner:DevAuth-${platform.loaderStr}:1.2.0")
+
+	// MixinConstraints. Lets us easily conditionally apply mixins.
+	include(implementation("com.moulberry:mixinconstraints:1.0.1")!!)
 }
 
 tasks.processResources {
