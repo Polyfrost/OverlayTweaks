@@ -121,7 +121,7 @@ public class OverlayTweaksConfig {
 
                         // GUIs
 
-                        //#if MC <= 1.20.44
+                        //#if MC <= 1.20.4
                         //$$ .group(OptionGroup.createBuilder()
                         //$$    .name(Text.literal("Tab Background"))
                         //$$    .option(Option.createBuilder(float.class)

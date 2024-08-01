@@ -1,12 +1,12 @@
 package dev.microcontrollers.overlaytweaks.mixin;
 
 import com.moulberry.mixinconstraints.annotations.IfMinecraftVersion;
-//#if MC >= 1.20.4
+//#if MC <= 1.20.4
 //$$ import dev.microcontrollers.overlaytweaks.config.OverlayTweaksConfig;
 //#endif
 import net.minecraft.client.gui.widget.TabNavigationWidget;
 import org.spongepowered.asm.mixin.Mixin;
-//#if MC >= 1.20.4
+//#if MC <= 1.20.4
 //$$ import org.spongepowered.asm.mixin.Unique;
 //$$ import org.spongepowered.asm.mixin.injection.Constant;
 //$$ import org.spongepowered.asm.mixin.injection.ModifyConstant;
@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.Mixin;
 @IfMinecraftVersion(maxVersion = "1.20.4")
 @Mixin(TabNavigationWidget.class)
 public class TabNavigationWidgetMixin {
-    //#if MC >= 1.20.4
+    //#if MC <= 1.20.4
     //$$ @ModifyConstant(method = "render", constant = @Constant(intValue = -16777216))
     //$$ private int modifyTabBackgroundColor(int opacity) {
     //$$    return withTabBackgroundOpacity(opacity, OverlayTweaksConfig.CONFIG.instance().tabBackgroundOpacity / 100F);
