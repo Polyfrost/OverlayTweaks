@@ -69,8 +69,6 @@ Contributing software and their licenses can be found at [OPEN_SOURCE_SOFTWARE.m
 
 #### Shield
 
-#### Shield
-
 - Shield Height
 - Shield Opacity
 - Color Shield Cooldown
