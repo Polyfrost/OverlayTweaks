@@ -39,7 +39,7 @@ public class OverlayTweaksConfig {
     @SerialEntry public double fireOverlayHeight = 0.0;
     @SerialEntry public float customFireOverlayOpacity = 100F;
     @SerialEntry public boolean removeItemTooltip = false;
-    //#if MC <= 1.20.1
+    //#if MC == 1.20.1
     //$$ @SerialEntry public boolean hideScoreboardInDebug = false;
     //#endif
     @SerialEntry public boolean classicDebugStyle = false;
@@ -198,7 +198,7 @@ public class OverlayTweaksConfig {
                                         .binding(defaults.removeItemTooltip, () -> config.removeItemTooltip, newVal -> config.removeItemTooltip = newVal)
                                         .controller(TickBoxControllerBuilder::create)
                                         .build())
-                                //#if MC <= 1.20.1
+                                //#if MC == 1.20.1
                                 //$$ .option(Option.<Boolean>createBuilder()
                                 //$$         .name(Text.translatable("overlay-tweaks.hide-scoreboard-in-debug-hud"))
                                 //$$         .description(OptionDescription.of(Text.translatable("overlay-tweaks.hide-scoreboard-in-debug-hud.description")))

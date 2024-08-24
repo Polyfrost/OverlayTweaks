@@ -7,7 +7,7 @@ import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import dev.microcontrollers.overlaytweaks.config.OverlayTweaksConfig;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.model.ModelPart;
-//#if MC < 1.21
+//#if MC <= 1.20.6
 //$$ import net.minecraft.client.network.ClientPlayerEntity;
 //#endif
 import net.minecraft.client.render.RenderLayer;
@@ -24,11 +24,11 @@ import net.minecraft.util.math.ColorHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-//#if MC < 1.21
+//#if MC <= 1.20.6
 //$$ import org.spongepowered.asm.mixin.injection.ModifyArgs;
 //#endif
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-//#if MC < 1.21
+//#if MC <= 1.20.6
 //$$ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 //#endif
 
@@ -55,7 +55,7 @@ public class BuiltinItemModelRendererMixin {
     }
 
     // We need to get the parent method parameters for mode, so we need to use @ModifyArgs.
-    //#if MC < 1.21
+    //#if MC <= 1.20.6
     //$$ @ModifyArgs(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/ModelPart;render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;IIFFFF)V"))
     //$$ private void changeShieldColorAndTransparency(Args args, ItemStack stack, ModelTransformationMode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
     //$$     if (MinecraftClient.getInstance().player == null) return;

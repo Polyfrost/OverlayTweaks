@@ -2,7 +2,7 @@ package dev.microcontrollers.overlaytweaks.mixin;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.microcontrollers.overlaytweaks.config.OverlayTweaksConfig;
-//#if MC <= 1.20.1
+//#if MC == 1.20.1
 //$$ import net.minecraft.client.MinecraftClient;
 //#endif
 import net.minecraft.client.gui.DrawContext;
@@ -53,7 +53,7 @@ public class InGameHudMixin {
         return opacity * OverlayTweaksConfig.CONFIG.instance().freezingOpacity / 100F;
     }
 
-    @Inject(method = "renderSpyglassOverlay", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIFFIIII)V", shift = At.Shift.BEFORE))
+    @Inject(method = "renderSpyglassOverlay", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIFFIIII)V"))
     private void changeSpyglassOpacityPre(DrawContext context, float scale, CallbackInfo ci) {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, OverlayTweaksConfig.CONFIG.instance().spyglassOpacity / 100F);
     }
@@ -72,7 +72,7 @@ public class InGameHudMixin {
         if (OverlayTweaksConfig.CONFIG.instance().removeItemTooltip) ci.cancel();
     }
 
-    //#if MC <= 1.20.1
+    //#if MC == 1.20.1
     //$$ @Inject(method = "renderScoreboardSidebar(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/scoreboard/ScoreboardObjective;)V", at = @At("HEAD"), cancellable = true)
     //$$ private void removeScoreboardInDebug(CallbackInfo ci) {
     //$$    if (OverlayTweaksConfig.CONFIG.instance().hideScoreboardInDebug && MinecraftClient.getInstance().options.debugEnabled) {
