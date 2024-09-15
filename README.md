@@ -1,3 +1,5 @@
+# Moved to https://codeberg.org/MicrocontrollersDev/OverlayTweaks
+
 # Overlay Tweaks
 
 A small QOL mod that lets you alter vanilla's overlays in small ways.
