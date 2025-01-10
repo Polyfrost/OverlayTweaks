@@ -1,16 +1,18 @@
-# Moved to https://codeberg.org/MicrocontrollersDev/OverlayTweaks
+<a href="https://ko-fi.com/microcontrollers" target="_blank">
+  <img alt="kofi-singular-alt" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/donate/kofi-singular-alt_vector.svg">
+</a>
+
+<a href="https://modrinth.com/mod/overlaytweaks" target="_blank" rel="nofollow">
+  <img alt="modrinth" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/modrinth_vector.svg">
+</a>
+
+<a href="https://www.curseforge.com/minecraft/mc-mods/overlay-tweaks" target="_blank">
+  <img alt="curseforge" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/curseforge_vector.svg">
+</a>
 
 # Overlay Tweaks
 
 A small QOL mod that lets you alter vanilla's overlays in small ways.
-
-## Download
-
-Downloads can be found on the [Modrinth page](https://modrinth.com/mod/overlaytweaks).
-
-## Licenses
-
-Contributing software and their licenses can be found at [OPEN_SOURCE_SOFTWARE.md](OPEN_SOURCE_SOFTWARE.md)
 
 ## Features
 
@@ -79,6 +81,6 @@ Contributing software and their licenses can be found at [OPEN_SOURCE_SOFTWARE.m
 
 - Potion Glint
 
-## Modpack?
+## Licenses
 
-If you want to use my mods in a Modpack, I ask that the modpack is only available on Modrinth. Feel free to reach out to me if you would like to discuss further.
+Contributing software and their licenses can be found at [OPEN_SOURCE_SOFTWARE.md](https://github.com/MicrocontrollersDev/OverlayTweaks/blob/multiversion/OPEN_SOURCE_SOFTWARE.md)
