@@ -1,53 +1,22 @@
 package dev.microcontrollers.overlaytweaks.mixin.screenopacity;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import dev.microcontrollers.overlaytweaks.config.OverlayTweaksConfig;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.ingame.AnvilScreen;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import dev.microcontrollers.overlaytweaks.ScreenHelper;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.AnvilScreen;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.resources.ResourceLocation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.function.Function;
 
 @Mixin(AnvilScreen.class)
 public class AnvilScreenMixin {
-    //#if MC >= 1.20.4
-    @Inject(method = "drawBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"))
-    //#else
-    //$$ @Inject(method = "drawBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V"))
-    //#endif
-    private void buttonOpacityStart(DrawContext context, float delta, int mouseX, int mouseY, CallbackInfo ci) {
-        RenderSystem.enableBlend();
-        RenderSystem.setShaderColor(1F, 1F, 1F, OverlayTweaksConfig.CONFIG.instance().containerTextureOpacity / 100F);
-    }
-
-    //#if MC >= 1.20.4
-    @Inject(method = "drawBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V", shift = At.Shift.AFTER))
-    //#else
-    //$$ @Inject(method = "drawBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V", shift = At.Shift.AFTER))
-    //#endif
-    private void buttonOpacityEnd(DrawContext context, float delta, int mouseX, int mouseY, CallbackInfo ci) {
-        RenderSystem.disableBlend();
-        RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
-    }
-
-    //#if MC >= 1.20.4
-    @Inject(method = "drawInvalidRecipeArrow", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"))
-    //#else
-    //$$ @Inject(method = "drawInvalidRecipeArrow", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V"))
-    //#endif
-    private void invalidArrowOpacityStart(DrawContext context, int x, int y, CallbackInfo ci) {
-        RenderSystem.enableBlend();
-        RenderSystem.setShaderColor(1F, 1F, 1F, OverlayTweaksConfig.CONFIG.instance().containerTextureOpacity / 100F);
-    }
-
-    //#if MC >= 1.20.4
-    @Inject(method = "drawInvalidRecipeArrow", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V", shift = At.Shift.AFTER))
-    //#else
-    //$$ @Inject(method = "drawInvalidRecipeArrow", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V", shift = At.Shift.AFTER))
-    //#endif
-    private void invalidArrowOpacityEnd(DrawContext context, int x, int y, CallbackInfo ci) {
-        RenderSystem.disableBlend();
-        RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
+    @WrapOperation(method = "renderErrorIcon", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Ljava/util/function/Function;Lnet/minecraft/resources/ResourceLocation;IIII)V"))
+    private void anvilInvalidArrowOpacity(GuiGraphics instance, Function<ResourceLocation, RenderType> renderTypeGetter, ResourceLocation sprite, int x, int y, int width, int height, Operation<Void> original) {
+        if (ScreenHelper.INSTANCE.isDefault()) original.call(instance, renderTypeGetter, sprite, x, y, width, height);
+        instance.blitSprite(renderTypeGetter, sprite, x, y, width, height, ScreenHelper.INSTANCE.getColor());
     }
 }

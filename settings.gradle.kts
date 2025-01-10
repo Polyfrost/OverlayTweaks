@@ -1,22 +1,35 @@
 pluginManagement {
 	repositories {
-		maven("https://repo.polyfrost.org/releases")
 		mavenCentral()
 		gradlePluginPortal()
+		maven("https://maven.fabricmc.net/")
+		maven("https://maven.neoforged.net/releases/")
+		maven("https://maven.architectury.dev")
+		maven("https://maven.kikugie.dev/snapshots")
+		maven("https://maven.kikugie.dev/releases")
 	}
 }
 
-listOf(
-	"1.20.1-fabric",
-	"1.20.4-fabric",
-	"1.20.6-fabric",
-	"1.21-fabric"
-).forEach { version ->
-	include(":$version")
-	project(":$version").apply {
-		projectDir = file("versions/$version")
-		buildFileName = "../../build.gradle.kts"
+plugins {
+	id("dev.kikugie.stonecutter") version "0.5"
+}
+
+stonecutter {
+	kotlinController = true
+	centralScript = "build.gradle.kts"
+
+	create(rootProject) {
+		fun mc(mcVersion: String, loaders: Iterable<String>) {
+			for (loader in loaders) {
+				vers("$mcVersion-$loader", mcVersion)
+			}
+		}
+
+		mc("1.21.3", listOf("fabric", "neoforge"))
+		mc("1.21.4", listOf("fabric", "neoforge"))
+
+		vcsVersion = "1.21.4-fabric"
 	}
 }
 
-rootProject.buildFileName = "root.gradle.kts"
+rootProject.name = "Overlay Tweaks"

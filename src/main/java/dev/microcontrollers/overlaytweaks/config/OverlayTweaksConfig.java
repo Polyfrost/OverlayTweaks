@@ -8,16 +8,16 @@ import dev.isxander.yacl3.config.v2.api.ConfigClassHandler;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder;
 import dev.isxander.yacl3.gui.controllers.ColorController;
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.Text;
+import dev.isxander.yacl3.platform.YACLPlatform;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class OverlayTweaksConfig {
     public static final ConfigClassHandler<OverlayTweaksConfig> CONFIG = ConfigClassHandler.createBuilder(OverlayTweaksConfig.class)
             .serializer(config -> GsonConfigSerializerBuilder.create(config)
-                    .setPath(FabricLoader.getInstance().getConfigDir().resolve("overlaytweaks.json"))
+                    .setPath(YACLPlatform.getConfigDir().resolve("overlaytweaks.json"))
                     .build())
             .build();
 
@@ -25,23 +25,17 @@ public class OverlayTweaksConfig {
 
     @SerialEntry public float containerOpacity = (208/255F) * 100F;
     @SerialEntry public float containerTextureOpacity = 100F;
-    @SerialEntry public boolean disableHandViewSway = false;
+//    @SerialEntry public boolean disableHandViewSway = false;
     @SerialEntry public boolean keepHand = false;
-    //#if MC <= 1.20.4
-    //$$ @SerialEntry public float tabBackgroundOpacity = 100F;
-    //#endif
 
     // HUD
 
     @SerialEntry public boolean removeWaterOverlay = true;
-    @SerialEntry public boolean removeWaterFov = true;
+    @SerialEntry public boolean removeSubmergedFov = true;
     @SerialEntry public boolean removeFireOverlay = true;
     @SerialEntry public double fireOverlayHeight = 0.0;
     @SerialEntry public float customFireOverlayOpacity = 100F;
     @SerialEntry public boolean removeItemTooltip = false;
-    //#if MC == 1.20.1
-    //$$ @SerialEntry public boolean hideScoreboardInDebug = false;
-    //#endif
     @SerialEntry public boolean classicDebugStyle = false;
     @SerialEntry public Color subtitleColor = new Color(0F, 0F, 0F, 1F);
 
@@ -49,7 +43,7 @@ public class OverlayTweaksConfig {
 
     @SerialEntry public float elderGuardianOpacity = 100F;
     @SerialEntry public float elderGuardianScale = 1F;
-    @SerialEntry public float pumpkinOpacity = 100F;
+    @SerialEntry public float equipableOpacity = 100F;
     @SerialEntry public float freezingOpacity = 100F;
     @SerialEntry public float spyglassOpacity = 100F;
     @SerialEntry public Color spyglassColor = new Color(-16777216);
@@ -69,32 +63,32 @@ public class OverlayTweaksConfig {
 
     public static Screen configScreen(Screen parent) {
         return YetAnotherConfigLib.create(CONFIG, ((defaults, config, builder) -> builder
-                .title(Text.translatable("overlay-tweaks.overlay-tweaks"))
+                .title(Component.translatable("overlay-tweaks.overlay-tweaks"))
 
                 // Miscellaneous
 
                 .category(ConfigCategory.createBuilder()
-                        .name(Text.translatable("overlay-tweaks.miscellaneous"))
+                        .name(Component.translatable("overlay-tweaks.miscellaneous"))
 
                         // Containers
 
                         .group(OptionGroup.createBuilder()
-                                .name(Text.translatable("overlay-tweaks.containers"))
+                                .name(Component.translatable("overlay-tweaks.containers"))
                                 .option(Option.<Float>createBuilder()
-                                        .name(Text.translatable("overlay-tweaks.container-background-opacity"))
-                                        .description(OptionDescription.of(Text.translatable("overlay-tweaks.container-background-opacity.description")))
+                                        .name(Component.translatable("overlay-tweaks.container-background-opacity"))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.container-background-opacity.description")))
                                         .binding((208/255F) * 100F, () -> config.containerOpacity, newVal -> config.containerOpacity = newVal)
                                         .controller(opt -> FloatSliderControllerBuilder.create(opt)
-                                                .formatValue(value -> Text.translatable(String.format("%,.0f", value) + "%"))
+                                                .formatValue(value -> Component.translatable(String.format("%,.0f", value) + "%"))
                                                 .range(0F, 100F)
                                                 .step(1F))
                                         .build())
                                 .option(Option.<Float>createBuilder()
-                                        .name(Text.translatable("overlay-tweaks.container-texture-opacity"))
-                                        .description(OptionDescription.of(Text.translatable("overlay-tweaks.container-texture-opacity.description")))
+                                        .name(Component.translatable("overlay-tweaks.container-texture-opacity"))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.container-texture-opacity.description")))
                                         .binding(100F, () -> config.containerTextureOpacity, newVal -> config.containerTextureOpacity = newVal)
                                         .controller(opt -> FloatSliderControllerBuilder.create(opt)
-                                                .formatValue(value -> Text.translatable(String.format("%,.0f", value) + "%"))
+                                                .formatValue(value -> Component.translatable(String.format("%,.0f", value) + "%"))
                                                 .range(0F, 100F)
                                                 .step(1F))
                                         .build())
@@ -103,58 +97,40 @@ public class OverlayTweaksConfig {
                         // Hand
 
                         .group(OptionGroup.createBuilder()
-                                .name(Text.translatable("overlay-tweaks.hand"))
+                                .name(Component.translatable("overlay-tweaks.hand"))
+//                                .option(Option.<Boolean>createBuilder()
+//                                        .name(Component.translatable("overlay-tweaks.disable-hand-view-sway"))
+//                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.disable-hand-view-sway.description")))
+//                                        .binding(defaults.disableHandViewSway, () -> config.disableHandViewSway, newVal -> config.disableHandViewSway = newVal)
+//                                        .controller(TickBoxControllerBuilder::create)
+//                                        .build())
                                 .option(Option.<Boolean>createBuilder()
-                                        .name(Text.translatable("overlay-tweaks.disable-hand-view-sway"))
-                                        .description(OptionDescription.of(Text.translatable("overlay-tweaks.disable-hand-view-sway.description")))
-                                        .binding(defaults.disableHandViewSway, () -> config.disableHandViewSway, newVal -> config.disableHandViewSway = newVal)
-                                        .controller(TickBoxControllerBuilder::create)
-                                        .build())
-                                .option(Option.<Boolean>createBuilder()
-                                        .name(Text.translatable("overlay-tweaks.keep-hand-in-hidden-hud"))
-                                        .description(OptionDescription.of(Text.translatable("overlay-tweaks.keep-hand-in-hidden-hud.description")))
+                                        .name(Component.translatable("overlay-tweaks.keep-hand-in-hidden-hud"))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.keep-hand-in-hidden-hud.description")))
                                         .binding(defaults.keepHand, () -> config.keepHand, newVal -> config.keepHand = newVal)
                                         .controller(TickBoxControllerBuilder::create)
                                         .build())
                                 .build())
-
-                        // GUIs
-
-                        //#if MC <= 1.20.4
-                        //$$ .group(OptionGroup.createBuilder()
-                        //$$    .name(Text.translatable("overlay-tweaks.tab-background"))
-                        //$$    .option(Option.<Float>createBuilder()
-                        //$$            .name(Text.translatable("overlay-tweaks.tab-background-opacity"))
-                        //$$            .description(OptionDescription.of(Text.translatable("overlay-tweaks.tab-background-opacity.description")))
-                        //$$            .binding(10F, () -> config.tabBackgroundOpacity, newVal -> config.tabBackgroundOpacity = newVal)
-                        //$$            .controller(opt -> FloatSliderControllerBuilder.create(opt)
-                        //$$                    .formatValue(value -> Text.translatable(String.format("%,.0f", value)))
-                        //$$                    .range(0F, 100F)
-                        //$$                    .step(1F))
-                        //$$            .build())
-                        //$$    .build())
-                        //#endif
-
                         .build())
 
                 // HUD
 
                 .category(ConfigCategory.createBuilder()
-                        .name(Text.translatable("overlay-tweaks.hud"))
+                        .name(Component.translatable("overlay-tweaks.hud"))
                         // Water
 
                         .group(OptionGroup.createBuilder()
-                                .name(Text.translatable("overlay-tweaks.water"))
+                                .name(Component.translatable("overlay-tweaks.liquid"))
                                 .option(Option.<Boolean>createBuilder()
-                                        .name(Text.translatable("overlay-tweaks.remove-water-overlay"))
-                                        .description(OptionDescription.of(Text.translatable("overlay-tweaks.remove-water-overlay.description")))
+                                        .name(Component.translatable("overlay-tweaks.remove-water-overlay"))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.remove-water-overlay.description")))
                                         .binding(defaults.removeWaterOverlay, () -> config.removeWaterOverlay, newVal -> config.removeWaterOverlay = newVal)
                                         .controller(TickBoxControllerBuilder::create)
                                         .build())
                                 .option(Option.<Boolean>createBuilder()
-                                        .name(Text.translatable("overlay-tweaks.remove-underwater-fov-change"))
-                                        .description(OptionDescription.of(Text.translatable("overlay-tweaks.remove-underwater-fov-change.description")))
-                                        .binding(defaults.removeWaterFov, () -> config.removeWaterFov, newVal -> config.removeWaterFov = newVal)
+                                        .name(Component.translatable("overlay-tweaks.remove-submerged-fov-change"))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.remove-submerged-fov-change.description")))
+                                        .binding(defaults.removeSubmergedFov, () -> config.removeSubmergedFov, newVal -> config.removeSubmergedFov = newVal)
                                         .controller(TickBoxControllerBuilder::create)
                                         .build())
                                 .build())
@@ -162,27 +138,27 @@ public class OverlayTweaksConfig {
                         // Fire
 
                         .group(OptionGroup.createBuilder()
-                                .name(Text.translatable("overlay-tweaks.fire"))
+                                .name(Component.translatable("overlay-tweaks.fire"))
                                 .option(Option.<Boolean>createBuilder()
-                                        .name(Text.translatable("overlay-tweaks.remove-fire-overlay-when-resistant"))
-                                        .description(OptionDescription.of(Text.translatable("overlay-tweaks.remove-fire-overlay-when-resistant.description")))
+                                        .name(Component.translatable("overlay-tweaks.remove-fire-overlay-when-resistant"))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.remove-fire-overlay-when-resistant.description")))
                                         .binding(defaults.removeFireOverlay, () -> config.removeFireOverlay, newVal -> config.removeFireOverlay = newVal)
                                         .controller(TickBoxControllerBuilder::create)
                                         .build())
                                 .option(Option.<Double>createBuilder()
-                                        .name(Text.translatable("overlay-tweaks.fire-overlay-height"))
-                                        .description(OptionDescription.of(Text.translatable("overlay-tweaks.fire-overlay-height.description")))
+                                        .name(Component.translatable("overlay-tweaks.fire-overlay-height"))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.fire-overlay-height.description")))
                                         .binding(0.0, () -> config.fireOverlayHeight, newVal -> config.fireOverlayHeight = newVal)
                                         .controller(opt -> DoubleSliderControllerBuilder.create(opt)
                                                 .range(-0.5, 0.0)
                                                 .step(0.01))
                                         .build())
                                 .option(Option.<Float>createBuilder()
-                                        .name(Text.translatable("overlay-tweaks.fire-overlay-opacity"))
-                                        .description(OptionDescription.of(Text.translatable("overlay-tweaks.fire-overlay-opacity.description")))
+                                        .name(Component.translatable("overlay-tweaks.fire-overlay-opacity"))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.fire-overlay-opacity.description")))
                                         .binding(100F, () -> config.customFireOverlayOpacity, newVal -> config.customFireOverlayOpacity = newVal)
                                         .controller(opt -> FloatSliderControllerBuilder.create(opt)
-                                                .formatValue(value -> Text.translatable(String.format("%,.0f", value) + "%"))
+                                                .formatValue(value -> Component.translatable(String.format("%,.0f", value) + "%"))
                                                 .range(0F, 100F)
                                                 .step(1F))
                                         .build())
@@ -191,30 +167,22 @@ public class OverlayTweaksConfig {
                         // Elements
 
                         .group(OptionGroup.createBuilder()
-                                .name(Text.translatable("overlay-tweaks.elements"))
+                                .name(Component.translatable("overlay-tweaks.elements"))
                                 .option(Option.<Boolean>createBuilder()
-                                        .name(Text.translatable("overlay-tweaks.remove-held-item-name-tooltip"))
-                                        .description(OptionDescription.of(Text.translatable("overlay-tweaks.remove-held-item-name-tooltip.description")))
+                                        .name(Component.translatable("overlay-tweaks.remove-held-item-name-tooltip"))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.remove-held-item-name-tooltip.description")))
                                         .binding(defaults.removeItemTooltip, () -> config.removeItemTooltip, newVal -> config.removeItemTooltip = newVal)
                                         .controller(TickBoxControllerBuilder::create)
                                         .build())
-                                //#if MC == 1.20.1
-                                //$$ .option(Option.<Boolean>createBuilder()
-                                //$$         .name(Text.translatable("overlay-tweaks.hide-scoreboard-in-debug-hud"))
-                                //$$         .description(OptionDescription.of(Text.translatable("overlay-tweaks.hide-scoreboard-in-debug-hud.description")))
-                                //$$         .binding(defaults.hideScoreboardInDebug, () -> config.hideScoreboardInDebug, newVal -> config.hideScoreboardInDebug = newVal)
-                                //$$         .controller(TickBoxControllerBuilder::create)
-                                //$$         .build())
-                                //#endif
                                 .option(Option.<Boolean>createBuilder()
-                                        .name(Text.translatable("overlay-tweaks.classic-debug-style"))
-                                        .description(OptionDescription.of(Text.translatable("overlay-tweaks.classic-debug-style.description")))
+                                        .name(Component.translatable("overlay-tweaks.classic-debug-style"))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.classic-debug-style.description")))
                                         .binding(defaults.classicDebugStyle, () -> config.classicDebugStyle, newVal -> config.classicDebugStyle = newVal)
                                         .controller(TickBoxControllerBuilder::create)
                                         .build())
                                 .option(Option.<Color>createBuilder()
-                                        .name(Text.translatable("overlay-tweaks.subtitle-background-color"))
-                                        .description(OptionDescription.of(Text.translatable("overlay-tweaks.subtitle-background-color")))
+                                        .name(Component.translatable("overlay-tweaks.subtitle-background-color"))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.subtitle-background-color")))
                                         .binding(defaults.subtitleColor, () -> config.subtitleColor, value -> config.subtitleColor = value)
                                         .customController(opt -> new ColorController(opt, true))
                                         .build())
@@ -224,27 +192,27 @@ public class OverlayTweaksConfig {
                 // Effects
 
                 .category(ConfigCategory.createBuilder()
-                        .name(Text.translatable("overlay-tweaks.effects"))
+                        .name(Component.translatable("overlay-tweaks.effects"))
 
                         // Elder Guardian
 
                         .group(OptionGroup.createBuilder()
-                                .name(Text.translatable("overlay-tweaks.elder-guardian"))
+                                .name(Component.translatable("overlay-tweaks.elder-guardian"))
                                 .option(Option.<Float>createBuilder()
-                                        .name(Text.translatable("overlay-tweaks.elder-guardian-opacity"))
-                                        .description(OptionDescription.of(Text.translatable("overlay-tweaks.elder-guardian-opacity.description")))
+                                        .name(Component.translatable("overlay-tweaks.elder-guardian-opacity"))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.elder-guardian-opacity.description")))
                                         .binding(100F, () -> config.elderGuardianOpacity, newVal -> config.elderGuardianOpacity = newVal)
                                         .controller(opt -> FloatSliderControllerBuilder.create(opt)
-                                                .formatValue(value -> Text.translatable(String.format("%,.0f", value) + "%"))
+                                                .formatValue(value -> Component.translatable(String.format("%,.0f", value) + "%"))
                                                 .range(0F, 100F)
                                                 .step(1F))
                                         .build())
                                 .option(Option.<Float>createBuilder()
-                                        .name(Text.translatable("overlay-tweaks.elder-guardian-scale"))
-                                        .description(OptionDescription.of(Text.translatable("overlay-tweaks.elder-guardian-scale.description")))
+                                        .name(Component.translatable("overlay-tweaks.elder-guardian-scale"))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.elder-guardian-scale.description")))
                                         .binding(1F, () -> config.elderGuardianScale, newVal -> config.elderGuardianScale = newVal)
                                         .controller(opt -> FloatSliderControllerBuilder.create(opt)
-                                                .formatValue(value -> Text.translatable(String.format("%,.1f", value) + "%"))
+                                                .formatValue(value -> Component.translatable(String.format("%,.1f", value) + "x"))
                                                 .range(0.1F, 3F)
                                                 .step(0.1F))
                                         .build())
@@ -253,61 +221,61 @@ public class OverlayTweaksConfig {
                         // Full Screen Effects
 
                         .group(OptionGroup.createBuilder()
-                                .name(Text.translatable("overlay-tweaks.full-screen-effects"))
+                                .name(Component.translatable("overlay-tweaks.full-screen-effects"))
                                 .option(Option.<Float>createBuilder()
-                                        .name(Text.translatable("overlay-tweaks.pumpkin-overlay-opacity"))
-                                        .description(OptionDescription.of(Text.translatable("overlay-tweaks.pumpkin-overlay-opacity.description")))
-                                        .binding(100F, () -> config.pumpkinOpacity, newVal -> config.pumpkinOpacity = newVal)
+                                        .name(Component.translatable("overlay-tweaks.equippable-overlay-opacity"))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.equippable-overlay-opacity.description")))
+                                        .binding(100F, () -> config.equipableOpacity, newVal -> config.equipableOpacity = newVal)
                                         .controller(opt -> FloatSliderControllerBuilder.create(opt)
-                                                .formatValue(value -> Text.translatable(String.format("%,.0f", value) + "%"))
+                                                .formatValue(value -> Component.translatable(String.format("%,.0f", value) + "%"))
                                                 .range(0F, 100F)
                                                 .step(1F))
                                         .build())
                                 .option(Option.<Float>createBuilder()
-                                        .name(Text.translatable("overlay-tweaks.freezing-overlay-opacity"))
-                                        .description(OptionDescription.of(Text.translatable("overlay-tweaks.freezing-overlay-opacity.description")))
+                                        .name(Component.translatable("overlay-tweaks.freezing-overlay-opacity"))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.freezing-overlay-opacity.description")))
                                         .binding(100F, () -> config.freezingOpacity, newVal -> config.freezingOpacity = newVal)
                                         .controller(opt -> FloatSliderControllerBuilder.create(opt)
-                                                .formatValue(value -> Text.translatable(String.format("%,.0f", value) + "%"))
+                                                .formatValue(value -> Component.translatable(String.format("%,.0f", value) + "%"))
                                                 .range(0F, 100F)
                                                 .step(1F))
                                         .build())
                                 .option(Option.<Float>createBuilder()
-                                        .name(Text.translatable("overlay-tweaks.spyglass-overlay-opacity"))
-                                        .description(OptionDescription.of(Text.translatable("overlay-tweaks.spyglass-overlay-opacity.description")))
+                                        .name(Component.translatable("overlay-tweaks.spyglass-overlay-opacity"))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.spyglass-overlay-opacity.description")))
                                         .binding(100F, () -> config.spyglassOpacity, newVal -> config.spyglassOpacity = newVal)
                                         .controller(opt -> FloatSliderControllerBuilder.create(opt)
-                                                .formatValue(value -> Text.translatable(String.format("%,.0f", value) + "%"))
+                                                .formatValue(value -> Component.translatable(String.format("%,.0f", value) + "%"))
                                                 .range(0F, 100F)
                                                 .step(1F))
                                         .build())
                                 .option(Option.<Color>createBuilder()
-                                        .name(Text.translatable("overlay-tweaks.spyglass-background-color"))
-                                        .description(OptionDescription.of(Text.translatable("overlay-tweaks.spyglass-background-color.description")))
+                                        .name(Component.translatable("overlay-tweaks.spyglass-background-color"))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.spyglass-background-color.description")))
                                         .binding(defaults.spyglassColor, () -> config.spyglassColor, value -> config.spyglassColor = value)
                                         .customController(opt -> new ColorController(opt, true))
                                         .build())
                                 .option(Option.<Boolean>createBuilder()
-                                        .name(Text.translatable("overlay-tweaks.constant-vignette-darkness"))
-                                        .description(OptionDescription.of(Text.translatable("overlay-tweaks.constant-vignette-darkness.description")))
+                                        .name(Component.translatable("overlay-tweaks.constant-vignette-darkness"))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.constant-vignette-darkness.description")))
                                         .binding(defaults.customVignetteDarkness, () -> config.customVignetteDarkness, newVal -> config.customVignetteDarkness = newVal)
                                         .controller(TickBoxControllerBuilder::create)
                                         .build())
                                 .option(Option.<Float>createBuilder()
-                                        .name(Text.translatable("overlay-tweaks.constant-vignette-darkness-value"))
-                                        .description(OptionDescription.of(Text.translatable("overlay-tweaks.constant-vignette-darkness-value.description")))
+                                        .name(Component.translatable("overlay-tweaks.constant-vignette-darkness-value"))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.constant-vignette-darkness-value.description")))
                                         .binding(0F, () -> config.customVignetteDarknessValue, newVal -> config.customVignetteDarknessValue = newVal)
                                         .controller(opt -> FloatSliderControllerBuilder.create(opt)
-                                                .formatValue(value -> Text.translatable(String.format("%,.0f", value) + "%"))
+                                                .formatValue(value -> Component.translatable(String.format("%,.0f", value) + "%"))
                                                 .range(0F, 100F)
                                                 .step(1F))
                                         .build())
                                 .option(Option.<Float>createBuilder()
-                                        .name(Text.translatable("overlay-tweaks.suffocation-overlay-brightness"))
-                                        .description(OptionDescription.of(Text.translatable("overlay-tweaks.suffocation-overlay-brightness.description")))
+                                        .name(Component.translatable("overlay-tweaks.suffocation-overlay-brightness"))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.suffocation-overlay-brightness.description")))
                                         .binding(10F, () -> config.suffocationOverlayBrightness, newVal -> config.suffocationOverlayBrightness = newVal)
                                         .controller(opt -> FloatSliderControllerBuilder.create(opt)
-                                                .formatValue(value -> Text.translatable(String.format("%,.0f", value)))
+                                                .formatValue(value -> Component.translatable(String.format("%,.0f", value)))
                                                 .range(0F, 100F)
                                                 .step(1F))
                                         .build())
@@ -317,51 +285,51 @@ public class OverlayTweaksConfig {
                 // Items
 
                 .category(ConfigCategory.createBuilder()
-                        .name(Text.translatable("overlay-tweaks.items"))
+                        .name(Component.translatable("overlay-tweaks.items"))
 
                         // Shield
 
                         .group(OptionGroup.createBuilder()
-                                .name(Text.translatable("overlay-tweaks.shields"))
+                                .name(Component.translatable("overlay-tweaks.shields"))
                                 .option(Option.<Float>createBuilder()
-                                        .name(Text.translatable("overlay-tweaks.shield-height"))
-                                        .description(OptionDescription.of(Text.translatable("overlay-tweaks.shield-height.description")))
+                                        .name(Component.translatable("overlay-tweaks.shield-height"))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.shield-height.description")))
                                         .binding(0F, () -> config.customShieldHeight, newVal -> config.customShieldHeight = newVal)
                                         .controller(opt -> FloatSliderControllerBuilder.create(opt)
-                                                .formatValue(value -> Text.translatable(String.format("%,.2f", value)))
+                                                .formatValue(value -> Component.translatable(String.format("%,.2f", value)))
                                                 .range(-0.5F, 0F)
                                                 .step(0.01F))
                                         .build())
                                 .option(Option.<Float>createBuilder()
-                                        .name(Text.translatable("overlay-tweaks.shield-opacity"))
-                                        .description(OptionDescription.of(Text.translatable("overlay-tweaks.shield-opacity.description")))
+                                        .name(Component.translatable("overlay-tweaks.shield-opacity"))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.shield-opacity.description")))
                                         .binding(100F, () -> config.customShieldOpacity, newVal -> config.customShieldOpacity = newVal)
                                         .controller(opt -> FloatSliderControllerBuilder.create(opt)
-                                                .formatValue(value -> Text.translatable(String.format("%,.0f", value) + "%"))
+                                                .formatValue(value -> Component.translatable(String.format("%,.0f", value) + "%"))
                                                 .range(0F, 100F)
                                                 .step(1F))
                                         .build())
                                 .option(Option.<Boolean>createBuilder()
-                                        .name(Text.translatable("overlay-tweaks.color-shield-cooldown"))
-                                        .description(OptionDescription.of(Text.translatable("overlay-tweaks.color-shield-cooldown.description")))
+                                        .name(Component.translatable("overlay-tweaks.color-shield-cooldown"))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.color-shield-cooldown.description")))
                                         .binding(defaults.colorShieldCooldown, () -> config.colorShieldCooldown, newVal -> config.colorShieldCooldown = newVal)
                                         .controller(TickBoxControllerBuilder::create)
                                         .build())
                                 .option(Option.<Color>createBuilder()
-                                        .name(Text.translatable("overlay-tweaks.shield-color-high"))
-                                        .description(OptionDescription.of(Text.translatable("overlay-tweaks.shield-color-high.description")))
+                                        .name(Component.translatable("overlay-tweaks.shield-color-high"))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.shield-color-high.description")))
                                         .binding(defaults.shieldColorHigh, () -> config.shieldColorHigh, value -> config.shieldColorHigh = value)
                                         .customController(opt -> new ColorController(opt, false))
                                         .build())
                                 .option(Option.<Color>createBuilder()
-                                        .name(Text.translatable("overlay-tweaks.shield-color-mid"))
-                                        .description(OptionDescription.of(Text.translatable("overlay-tweaks.shield-color-mid.description")))
+                                        .name(Component.translatable("overlay-tweaks.shield-color-mid"))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.shield-color-mid.description")))
                                         .binding(defaults.shieldColorMid, () -> config.shieldColorMid, value -> config.shieldColorMid = value)
                                         .customController(opt -> new ColorController(opt, false))
                                         .build())
                                 .option(Option.<Color>createBuilder()
-                                        .name(Text.translatable("overlay-tweaks.shield-color-low"))
-                                        .description(OptionDescription.of(Text.translatable("overlay-tweaks.shield-color-low.description")))
+                                        .name(Component.translatable("overlay-tweaks.shield-color-low"))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.shield-color-low.description")))
                                         .binding(defaults.shieldColorLow, () -> config.shieldColorLow, value -> config.shieldColorLow = value)
                                         .customController(opt -> new ColorController(opt, false))
                                         .build())
@@ -370,10 +338,10 @@ public class OverlayTweaksConfig {
                         // Potions
 
                         .group(OptionGroup.createBuilder()
-                                .name(Text.translatable("overlay-tweaks.potions"))
+                                .name(Component.translatable("overlay-tweaks.potions"))
                                 .option(Option.<Boolean>createBuilder()
-                                        .name(Text.translatable("overlay-tweaks.potion-glint"))
-                                        .description(OptionDescription.of(Text.translatable("overlay-tweaks.potion-glint.description")))
+                                        .name(Component.translatable("overlay-tweaks.potion-glint"))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.potion-glint.description")))
                                         .binding(defaults.potionGlint, () -> config.potionGlint, newVal -> config.potionGlint = newVal)
                                         .controller(TickBoxControllerBuilder::create)
                                         .build())

@@ -1,9 +1,9 @@
 {
 	"schemaVersion": 1,
-	"id": "overlaytweaks",
+	"id": "${id}",
 	"version": "${version}",
-	"name": "Overlay Tweaks",
-	"description": "Small tweaks to Minecraft's overlays!",
+	"name": "${name}",
+	"description": "${description}",
 	"authors": [
 		"Microcontrollers"
 	],
@@ -15,12 +15,12 @@
 		"nextdayy"
 	],
 	"contact": {
-		"homepage": "https://modrinth.com/mod/overlaytweaks",
-		"sources": "https://github.com/MicrocontrollersDev/OverlayTweaks",
-		"issues": "https://github.com/MicrocontrollersDev/OverlayTweaks/issues"
+		"homepage": "${modrinth}",
+		"sources": "${source}",
+		"issues": "${issues}"
 	},
-	"license": "LGPLv3",
-	"icon": "assets/overlaytweaks/icon.png",
+	"license": "${license}",
+	"icon": "assets/${id}/icon.png",
 	"environment": "client",
 	"entrypoints": {
 		"main": [
@@ -31,11 +31,11 @@
 		]
 	},
 	"mixins": [
-		"overlaytweaks.mixins.json"
+		"${id}.mixins.json"
 	],
 	"depends": {
-		"fabricloader": ">=0.14",
-		"minecraft": ">=1.20",
+		"fabricloader": ">=0.16",
+		"minecraft": "${mcdep}",
 		"java": ">=17",
 		"fabric-api": "*",
 		"yet_another_config_lib_v3": "*"
@@ -43,8 +43,10 @@
 	"custom": {
 		"modmenu": {
 			"links": {
-				"modmenu.discord": "https://discord.gg/rejfv9kFJj",
-				"modmenu.modrinth": "https://modrinth.com/mod/overlaytweaks"
+				"modmenu.kofi": "${kofi}",
+				"modmenu.discord": "${discord}",
+				"modmenu.modrinth": "${modrinth}",
+				"modmenu.curseforge": "${curseforge}"
 			},
 			"update_checker": true
 		}

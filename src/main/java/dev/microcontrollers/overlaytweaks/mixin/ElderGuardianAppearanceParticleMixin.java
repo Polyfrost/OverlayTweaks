@@ -1,38 +1,38 @@
 package dev.microcontrollers.overlaytweaks.mixin;
 
+//? if <=1.21.3
+/*import com.llamalad7.mixinextras.sugar.Local;*/
+import com.mojang.blaze3d.vertex.PoseStack;
+//? if <=1.21.3
+/*import com.mojang.blaze3d.vertex.VertexConsumer;*/
 import dev.microcontrollers.overlaytweaks.config.OverlayTweaksConfig;
-import net.minecraft.client.particle.ElderGuardianAppearanceParticle;
-import net.minecraft.client.render.*;
+import net.minecraft.client.Camera;
+import net.minecraft.client.particle.MobAppearanceParticle;
+//? if >=1.21.4
+import net.minecraft.client.renderer.MultiBufferSource;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
-@Mixin(ElderGuardianAppearanceParticle.class)
+@Mixin(MobAppearanceParticle.class)
 public class ElderGuardianAppearanceParticleMixin {
-    //#if MC >= 1.21
-    @ModifyArg(method = "buildGeometry", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/ColorHelper$Argb;fromFloats(FFFF)I"), index = 0)
-    //#else
-    //$$ @ModifyArg(method = "buildGeometry", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/Model;render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;IIFFFF)V"), index = 7)
-    //#endif
+    @ModifyArg(method = /*? if >=1.21.4 {*/ "renderCustom" /*?} else {*/ /*"render" *//*?}*/, at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ARGB;colorFromFloat(FFFF)I"), index = 0)
     private float changeElderGuardianOpacity(float g) {
         return g * OverlayTweaksConfig.CONFIG.instance().elderGuardianOpacity / 100F / 0.55F;
     }
 
     // just cancel everything if it's 0 anyways
-    @Inject(method = "buildGeometry", at = @At("HEAD"), cancellable = true)
-    private void removeElderGuardianJumpscare(VertexConsumer vertexConsumer, Camera camera, float tickDelta, CallbackInfo ci) {
+    @Inject(method = /*? if >=1.21.4 {*/ "renderCustom" /*?} else {*/ /*"render" *//*?}*/, at = @At("HEAD"), cancellable = true)
+    private void removeElderGuardianJumpscare(/*? if >=1.21.4 {*/ PoseStack poseStack, MultiBufferSource bufferSource /*?} else {*/ /*VertexConsumer buffer *//*?}*/, Camera camera, float partialTick, CallbackInfo ci) {
         if (OverlayTweaksConfig.CONFIG.instance().elderGuardianOpacity == 0F) ci.cancel();
     }
 
     // TODO: make it render in front of world always
-    @ModifyArgs(method = "buildGeometry", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;scale(FFF)V"))
-    private void changeElderGuardianScale(Args args) {
-        args.set(0, -OverlayTweaksConfig.CONFIG.instance().elderGuardianScale);
-        args.set(1, -OverlayTweaksConfig.CONFIG.instance().elderGuardianScale);
-        args.set(2, OverlayTweaksConfig.CONFIG.instance().elderGuardianScale);
+    @Inject(method = /*? if >=1.21.4 {*/ "renderCustom" /*?} else {*/ /*"render" *//*?}*/, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/Model;renderToBuffer(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;III)V"))
+    private void changeElderGuardianScale(/*? if >=1.21.4 {*/ PoseStack poseStack, MultiBufferSource bufferSource /*?} else {*/ /*VertexConsumer buffer *//*?}*/, Camera camera, float partialTicks, CallbackInfo ci /*? if <=1.21.3 {*//*, @Local PoseStack poseStack *//*?}*/) {
+        float scale = OverlayTweaksConfig.CONFIG.instance().elderGuardianScale;
+        poseStack.scale(scale, scale, scale);
     }
 }
