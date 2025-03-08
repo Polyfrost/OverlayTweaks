@@ -1,5 +1,5 @@
 plugins {
-	id("dev.architectury.loom") version "1.7.+"
+	id("dev.architectury.loom") version "1.9-SNAPSHOT"
 }
 
 class ModData {
@@ -63,6 +63,7 @@ repositories {
 	maven("https://maven.isxander.dev/releases") // YACL
 	maven("https://thedarkcolour.github.io/KotlinForForge") // Kotlin for Forge - required by YACL
 	maven("https://maven.terraformersmc.com") // Mod Menu
+	maven("https://maven.nucleoid.xyz/") // Placeholder API - required by Mod Menu
 	maven("https://maven.neoforged.net/releases") // NeoForge
 	maven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1") // DevAuth
 }
@@ -91,14 +92,18 @@ dependencies {
 
 	if (loader.isFabric) {
 		modImplementation("net.fabricmc:fabric-loader:${property("deps.fabric_loader")}")
-		modImplementation("dev.isxander:yet-another-config-lib:${deps.yaclVersion}+${yaclMcVersion}-${loader.loader}")
+		if (mc.version == "1.21.3") modImplementation("net.fabricmc.fabric-api:fabric-api:0.106.1+1.21.3") // TODO: remove when I know why this is needed lol
+		if (mc.version == "1.21.3") modImplementation("dev.isxander:yet-another-config-lib:${deps.yaclVersion}+1.21.2-${loader.loader}")
+		else if (mc.version == "1.21.1") modImplementation("dev.isxander:yet-another-config-lib:${deps.yaclVersion}+1.21-${loader.loader}")
+		else modImplementation("dev.isxander:yet-another-config-lib:${deps.yaclVersion}+${mc.version}-${loader.loader}")
 		modImplementation("com.terraformersmc:modmenu:${deps.modmenuVersion}")
-		if (deps.fabricApiVersion != "[VERSIONED]") modImplementation("net.fabricmc.fabric-api:fabric-api:${deps.fabricApiVersion}")
 	} else if (loader.isNeoforge) {
 		"neoForge"("net.neoforged:neoforge:${findProperty("deps.neoforge")}")
-		implementation("dev.isxander:yet-another-config-lib:${deps.yaclVersion}+${yaclMcVersion}-${loader.loader}") {isTransitive = false}
-	}
+		if (mc.version == "1.21.3") implementation("dev.isxander:yet-another-config-lib:${deps.yaclVersion}+1.21.2-${loader.loader}") {isTransitive = false}
+		else if (mc.version == "1.21.1") implementation("dev.isxander:yet-another-config-lib:${deps.yaclVersion}+1.21-${loader.loader}") {isTransitive = false}
+		else implementation("dev.isxander:yet-another-config-lib:${deps.yaclVersion}+1.21.2-${loader.loader}") {isTransitive = false} 	}
 }
+
 
 java {
 	val java = if (stonecutter.eval(

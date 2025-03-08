@@ -3,7 +3,6 @@
   "package": "dev.microcontrollers.overlaytweaks.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "BlockEntityWithoutLevelRendererMixin",
     "DebugScreenOverlayMixin",
     "ElderGuardianAppearanceParticleMixin",
     "GameRendererMixin",
