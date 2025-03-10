@@ -25,7 +25,7 @@ public class OverlayTweaksConfig {
 
     @SerialEntry public float containerOpacity = (208/255F) * 100F;
     @SerialEntry public float containerTextureOpacity = 100F;
-//    @SerialEntry public boolean disableHandViewSway = false;
+    @SerialEntry public boolean disableHandViewSway = false;
     @SerialEntry public boolean keepHand = false;
 
     // HUD
@@ -98,12 +98,12 @@ public class OverlayTweaksConfig {
 
                         .group(OptionGroup.createBuilder()
                                 .name(Component.translatable("overlay-tweaks.hand"))
-//                                .option(Option.<Boolean>createBuilder()
-//                                        .name(Component.translatable("overlay-tweaks.disable-hand-view-sway"))
-//                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.disable-hand-view-sway.description")))
-//                                        .binding(defaults.disableHandViewSway, () -> config.disableHandViewSway, newVal -> config.disableHandViewSway = newVal)
-//                                        .controller(TickBoxControllerBuilder::create)
-//                                        .build())
+                                .option(Option.<Boolean>createBuilder()
+                                        .name(Component.translatable("overlay-tweaks.disable-hand-view-sway"))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.disable-hand-view-sway.description")))
+                                        .binding(defaults.disableHandViewSway, () -> config.disableHandViewSway, newVal -> config.disableHandViewSway = newVal)
+                                        .controller(TickBoxControllerBuilder::create)
+                                        .build())
                                 .option(Option.<Boolean>createBuilder()
                                         .name(Component.translatable("overlay-tweaks.keep-hand-in-hidden-hud"))
                                         .description(OptionDescription.of(Component.translatable("overlay-tweaks.keep-hand-in-hidden-hud.description")))
