@@ -13,19 +13,27 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.special.ShieldSpecialRenderer;
+import net.minecraft.client.resources.model.Material;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ARGB;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.entity.BannerPatternLayers;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ShieldSpecialRenderer.class)
 public class ShieldSpecialRendererMixin {
+    @Shadow @Final private ShieldModel model;
+
     @WrapOperation(method = "render(Lnet/minecraft/core/component/DataComponentMap;Lnet/minecraft/world/item/ItemDisplayContext;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IIZ)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/ShieldModel;renderType(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/client/renderer/RenderType;", ordinal = 0))
     private RenderType enableShieldTransparency(ShieldModel instance, ResourceLocation resourceLocation, Operation<RenderType> original) {
         if (OverlayTweaksConfig.CONFIG.instance().customShieldOpacity != 100 && OverlayTweaksConfig.CONFIG.instance().customShieldOpacity != 0) return RenderType.entityTranslucent(resourceLocation); // if 100, let's skip the consequences of translucency
@@ -40,10 +48,25 @@ public class ShieldSpecialRendererMixin {
 
     @WrapOperation(method = "render(Lnet/minecraft/core/component/DataComponentMap;Lnet/minecraft/world/item/ItemDisplayContext;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IIZ)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/geom/ModelPart;render(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;II)V"))
     private void changeShieldColorAndTransparencyPre(ModelPart instance, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, Operation<Void> original, @Local(argsOnly = true) LocalRef<ItemDisplayContext> itemDisplayContext) {
-        if (itemDisplayContext.get() == ItemDisplayContext.GUI || itemDisplayContext.get() == ItemDisplayContext.THIRD_PERSON_LEFT_HAND || itemDisplayContext.get() == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND) original.call(instance, poseStack, buffer, packedLight, packedOverlay);
+        if (overlaytweaks$renderShield(itemDisplayContext.get(), instance, poseStack, buffer, packedLight, packedOverlay)) {
+            original.call(instance, poseStack, buffer, packedLight, packedOverlay);
+        }
+    }
+
+    // TODO: find a better way to support bannered shields rather than replacing the draw outright
+    @WrapOperation(method = "render(Lnet/minecraft/core/component/DataComponentMap;Lnet/minecraft/world/item/ItemDisplayContext;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IIZ)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/blockentity/BannerRenderer;renderPatterns(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IILnet/minecraft/client/model/geom/ModelPart;Lnet/minecraft/client/resources/model/Material;ZLnet/minecraft/world/item/DyeColor;Lnet/minecraft/world/level/block/entity/BannerPatternLayers;ZZ)V"))
+    private void replaceBannerRenderCall(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, ModelPart flagPart, Material flagMaterial, boolean banner, DyeColor baseColor, BannerPatternLayers patterns, boolean withGlint, boolean noEntity, Operation<Void> original, @Local(argsOnly = true) LocalRef<ItemDisplayContext> itemDisplayContext, @Local LocalRef<VertexConsumer> vertexConsumer) {
+        if (overlaytweaks$renderShield(itemDisplayContext.get(), this.model.plate(), poseStack, vertexConsumer.get(), packedLight, packedOverlay)) {
+            original.call(poseStack, bufferSource, packedLight, packedOverlay, flagPart, flagMaterial, banner, baseColor, patterns, withGlint, noEntity);
+        }
+    }
+
+    // return true if we still need to render (original) shield, return false if we use our custom render
+    @Unique
+    private boolean overlaytweaks$renderShield(ItemDisplayContext context, ModelPart instance, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay) {
         assert Minecraft.getInstance().player != null;
         float cooldown = Minecraft.getInstance().player.getCooldowns().getCooldownPercent(new ItemStack(Items.SHIELD), 0);
-        if (itemDisplayContext.get() == ItemDisplayContext.FIRST_PERSON_LEFT_HAND || itemDisplayContext.get() == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND
+        if (context == ItemDisplayContext.FIRST_PERSON_LEFT_HAND || context == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND
                 && OverlayTweaksConfig.CONFIG.instance().customShieldOpacity != 0) {
             float a = OverlayTweaksConfig.CONFIG.instance().customShieldOpacity / 100F;
             float r = 1F; float g = 1F; float b = 1F;
@@ -64,8 +87,8 @@ public class ShieldSpecialRendererMixin {
                 }
             }
             instance.render(poseStack, buffer, packedLight, packedOverlay, ARGB.colorFromFloat(a, r, g, b));
-            return;
+            return false;
         }
-        original.call(instance, poseStack, buffer, packedLight, packedOverlay);
+        return true;
     }
 }

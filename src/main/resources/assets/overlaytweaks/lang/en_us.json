@@ -65,7 +65,7 @@
   "overlay-tweaks.shield-height": "Shield Height",
   "overlay-tweaks.shield-height.description": "The value for shield height.",
   "overlay-tweaks.shield-opacity": "Shield Opacity",
-  "overlay-tweaks.shield-opacity.description": "The value for shield opacity. Currently does not work for shields with banner designs.",
+  "overlay-tweaks.shield-opacity.description": "The value for shield opacity.",
   "overlay-tweaks.color-shield-cooldown": "Color Shield Cooldown",
   "overlay-tweaks.color-shield-cooldown.description": "Adds a color to your shield depending on the cooldown remaining",
   "overlay-tweaks.shield-color-high": "Shield Color High",
