@@ -27,6 +27,8 @@ public class OverlayTweaksConfig {
     @SerialEntry public float containerTextureOpacity = 100F;
     @SerialEntry public boolean disableHandViewSway = false;
     @SerialEntry public boolean keepHand = false;
+    @SerialEntry public float handInvisibilityOpacity = 0F;
+
 
     // HUD
 
@@ -110,7 +112,17 @@ public class OverlayTweaksConfig {
                                         .binding(defaults.keepHand, () -> config.keepHand, newVal -> config.keepHand = newVal)
                                         .controller(TickBoxControllerBuilder::create)
                                         .build())
+                                .option(Option.<Float>createBuilder()
+                                        .name(Component.translatable("overlay-tweaks.hand-invisibility-opacity"))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.keep-hand-in-hidden-hud.description")))
+                                        .binding((208/255F) * 100F, () -> config.handInvisibilityOpacity, newVal -> config.handInvisibilityOpacity = newVal)
+                                        .controller(opt -> FloatSliderControllerBuilder.create(opt)
+                                                .formatValue(value -> Component.translatable(String.format("%,.0f", value) + "%"))
+                                                .range(0F, 100F)
+                                                .step(1F))
+                                        .build())
                                 .build())
+
                         .build())
 
                 // HUD

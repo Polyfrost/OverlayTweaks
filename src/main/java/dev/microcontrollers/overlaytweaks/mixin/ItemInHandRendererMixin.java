@@ -1,5 +1,6 @@
 package dev.microcontrollers.overlaytweaks.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.microcontrollers.overlaytweaks.config.OverlayTweaksConfig;
@@ -27,5 +28,10 @@ public abstract class ItemInHandRendererMixin {
     @WrapWithCondition(method = "renderHandsWithItems", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;mulPose(Lorg/joml/Quaternionf;)V"))
     private boolean removeHandSway(PoseStack instance, Quaternionf quaternion) {
         return !OverlayTweaksConfig.CONFIG.instance().disableHandViewSway;
+    }
+
+    @ModifyExpressionValue(method = "renderArmWithItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/AbstractClientPlayer;isInvisible()Z"))
+    private boolean showArmWhileInvisible(boolean original) {
+        return OverlayTweaksConfig.CONFIG.instance().handInvisibilityOpacity == 0F && original;
     }
 }
