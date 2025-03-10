@@ -114,7 +114,7 @@ public class OverlayTweaksConfig {
                                         .build())
                                 .option(Option.<Float>createBuilder()
                                         .name(Component.translatable("overlay-tweaks.hand-invisibility-opacity"))
-                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.keep-hand-in-hidden-hud.description")))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.hand-invisibility-opacity.description")))
                                         .binding((208/255F) * 100F, () -> config.handInvisibilityOpacity, newVal -> config.handInvisibilityOpacity = newVal)
                                         .controller(opt -> FloatSliderControllerBuilder.create(opt)
                                                 .formatValue(value -> Component.translatable(String.format("%,.0f", value) + "%"))
