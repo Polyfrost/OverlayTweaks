@@ -3,6 +3,7 @@ package dev.microcontrollers.overlaytweaks.mixin;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import dev.microcontrollers.overlaytweaks.config.HeartDisplay;
 import dev.microcontrollers.overlaytweaks.config.OverlayTweaksConfig;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
@@ -69,8 +70,8 @@ public class GuiMixin {
 
     @ModifyVariable(method = "renderHeart", at = @At(value = "HEAD"), ordinal = 0, argsOnly = true)
     private boolean setAlwaysHardcoreHearts(boolean value) {
-        if (OverlayTweaksConfig.CONFIG.instance().alwaysHardcoreHearts) return true;
-        if (OverlayTweaksConfig.CONFIG.instance().alwaysRegularHearts) return false;
+        if (OverlayTweaksConfig.CONFIG.instance().heartDisplayType == HeartDisplay.HARDCORE) return true;
+        if (OverlayTweaksConfig.CONFIG.instance().heartDisplayType == HeartDisplay.REGULAR) return false;
         return value;
     }
 }

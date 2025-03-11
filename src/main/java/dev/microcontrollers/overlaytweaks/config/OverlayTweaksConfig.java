@@ -2,6 +2,7 @@ package dev.microcontrollers.overlaytweaks.config;
 
 import dev.isxander.yacl3.api.*;
 import dev.isxander.yacl3.api.controller.DoubleSliderControllerBuilder;
+import dev.isxander.yacl3.api.controller.EnumControllerBuilder;
 import dev.isxander.yacl3.api.controller.FloatSliderControllerBuilder;
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.ConfigClassHandler;
@@ -28,8 +29,7 @@ public class OverlayTweaksConfig {
     @SerialEntry public boolean disableHandViewSway = false;
     @SerialEntry public boolean keepHand = false;
     @SerialEntry public float handInvisibilityOpacity = 0F;
-    @SerialEntry public boolean alwaysHardcoreHearts = false;
-    @SerialEntry public boolean alwaysRegularHearts = false;
+    @SerialEntry public HeartDisplay heartDisplayType = HeartDisplay.DEFAULT;
 
     // HUD
 
@@ -126,20 +126,14 @@ public class OverlayTweaksConfig {
 
                         .group(OptionGroup.createBuilder()
                                 .name(Component.translatable("overlay-tweaks.hotbar"))
-                                .option(Option.<Boolean>createBuilder()
-                                        .name(Component.translatable("overlay-tweaks.always-hardcore-hearts"))
-                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.always-hardcore-hearts.description")))
-                                        .binding(defaults.alwaysHardcoreHearts, () -> config.alwaysHardcoreHearts, newVal -> config.alwaysHardcoreHearts = newVal)
-                                        .controller(TickBoxControllerBuilder::create)
-                                        .build())
-                                .option(Option.<Boolean>createBuilder()
-                                        .name(Component.translatable("overlay-tweaks.always-regular-hearts"))
-                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.always-regular-hearts.description")))
-                                        .binding(defaults.alwaysRegularHearts, () -> config.alwaysRegularHearts, newVal -> config.alwaysRegularHearts = newVal)
-                                        .controller(TickBoxControllerBuilder::create)
+                                .option(Option.<HeartDisplay>createBuilder()
+                                        .name(Component.translatable("overlay-tweaks.heart-display-type"))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.heart-display-type.description")))
+                                        .binding(defaults.heartDisplayType, () -> config.heartDisplayType, newVal -> config.heartDisplayType = newVal)
+                                        .controller(opt -> EnumControllerBuilder.create(opt).enumClass(HeartDisplay.class)
+                                                .formatValue(value -> Component.translatable("overlay-tweaks.heart-display-type." + value.name().toLowerCase())))
                                         .build())
                                 .build())
-
                         .build())
 
                 // HUD
