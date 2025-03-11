@@ -22,12 +22,8 @@ import java.util.function.Function;
 
 @Mixin(Gui.class)
 public class GuiMixin {
-    @Shadow
-    public float vignetteBrightness;
-    @Mutable
-    @Shadow
-    @Final
-    private DebugScreenOverlay debugOverlay;
+    @Shadow public float vignetteBrightness;
+    @Mutable @Shadow @Final private DebugScreenOverlay debugOverlay;
 
     public GuiMixin(DebugScreenOverlay debugOverlay) {
         this.debugOverlay = debugOverlay;
@@ -35,8 +31,9 @@ public class GuiMixin {
 
     @Inject(method = "updateVignetteBrightness", at = @At("TAIL"))
     private void changeVignetteDarkness(Entity entity, CallbackInfo ci) {
-        if (OverlayTweaksConfig.CONFIG.instance().customVignetteDarkness)
+        if (OverlayTweaksConfig.CONFIG.instance().customVignetteDarkness) {
             this.vignetteBrightness = OverlayTweaksConfig.CONFIG.instance().customVignetteDarknessValue / 100;
+        }
     }
 
     @ModifyArg(method = "renderCameraOverlays", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Gui;renderTextureOverlay(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/resources/ResourceLocation;F)V", ordinal = 0), index = 2)
@@ -57,12 +54,23 @@ public class GuiMixin {
 
     @ModifyExpressionValue(method = "renderSpyglassOverlay", at = @At(value = "CONSTANT", args = "intValue=-16777216"))
     private int changeSpyglassColor(int original) {
-        if (original == OverlayTweaksConfig.CONFIG.instance().spyglassColor.getRGB()) return original;
-        else return OverlayTweaksConfig.CONFIG.instance().spyglassColor.getRGB();
+        return OverlayTweaksConfig.CONFIG.instance().spyglassColor.getRGB() == original ? original : OverlayTweaksConfig.CONFIG.instance().spyglassColor.getRGB();
     }
 
     @Inject(method = "renderSelectedItemName", at = @At("HEAD"), cancellable = true)
     private void removeItemTooltip(GuiGraphics guiGraphics, CallbackInfo ci) {
         if (OverlayTweaksConfig.CONFIG.instance().removeItemTooltip) ci.cancel();
+    }
+
+    @WrapOperation(method = "renderPortalOverlay", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ARGB;white(F)I"))
+    private int changeNetherPortalOpacity(float alpha, Operation<Integer> original) {
+        return original.call(alpha * OverlayTweaksConfig.CONFIG.instance().netherPortalOpacity / 100F);
+    }
+
+    @ModifyVariable(method = "renderHeart", at = @At(value = "HEAD"), ordinal = 0, argsOnly = true)
+    private boolean setAlwaysHardcoreHearts(boolean value) {
+        if (OverlayTweaksConfig.CONFIG.instance().alwaysHardcoreHearts) return true;
+        if (OverlayTweaksConfig.CONFIG.instance().alwaysRegularHearts) return false;
+        return value;
     }
 }

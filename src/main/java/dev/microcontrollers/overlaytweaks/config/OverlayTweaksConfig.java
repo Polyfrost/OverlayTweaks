@@ -28,7 +28,8 @@ public class OverlayTweaksConfig {
     @SerialEntry public boolean disableHandViewSway = false;
     @SerialEntry public boolean keepHand = false;
     @SerialEntry public float handInvisibilityOpacity = 0F;
-
+    @SerialEntry public boolean alwaysHardcoreHearts = false;
+    @SerialEntry public boolean alwaysRegularHearts = false;
 
     // HUD
 
@@ -38,7 +39,6 @@ public class OverlayTweaksConfig {
     @SerialEntry public double fireOverlayHeight = 0.0;
     @SerialEntry public float customFireOverlayOpacity = 100F;
     @SerialEntry public boolean removeItemTooltip = false;
-    @SerialEntry public boolean classicDebugStyle = false;
     @SerialEntry public Color subtitleColor = new Color(0F, 0F, 0F, 1F);
 
     // Effects
@@ -52,6 +52,7 @@ public class OverlayTweaksConfig {
     @SerialEntry public boolean customVignetteDarkness = false;
     @SerialEntry public float customVignetteDarknessValue = 0F;
     @SerialEntry public float suffocationOverlayBrightness = 10F;
+    @SerialEntry public float netherPortalOpacity = 100F;
 
     // Items
 
@@ -123,6 +124,22 @@ public class OverlayTweaksConfig {
                                         .build())
                                 .build())
 
+                        .group(OptionGroup.createBuilder()
+                                .name(Component.translatable("overlay-tweaks.hotbar"))
+                                .option(Option.<Boolean>createBuilder()
+                                        .name(Component.translatable("overlay-tweaks.always-hardcore-hearts"))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.always-hardcore-hearts.description")))
+                                        .binding(defaults.alwaysHardcoreHearts, () -> config.alwaysHardcoreHearts, newVal -> config.alwaysHardcoreHearts = newVal)
+                                        .controller(TickBoxControllerBuilder::create)
+                                        .build())
+                                .option(Option.<Boolean>createBuilder()
+                                        .name(Component.translatable("overlay-tweaks.always-regular-hearts"))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.always-regular-hearts.description")))
+                                        .binding(defaults.alwaysRegularHearts, () -> config.alwaysRegularHearts, newVal -> config.alwaysRegularHearts = newVal)
+                                        .controller(TickBoxControllerBuilder::create)
+                                        .build())
+                                .build())
+
                         .build())
 
                 // HUD
@@ -184,12 +201,6 @@ public class OverlayTweaksConfig {
                                         .name(Component.translatable("overlay-tweaks.remove-held-item-name-tooltip"))
                                         .description(OptionDescription.of(Component.translatable("overlay-tweaks.remove-held-item-name-tooltip.description")))
                                         .binding(defaults.removeItemTooltip, () -> config.removeItemTooltip, newVal -> config.removeItemTooltip = newVal)
-                                        .controller(TickBoxControllerBuilder::create)
-                                        .build())
-                                .option(Option.<Boolean>createBuilder()
-                                        .name(Component.translatable("overlay-tweaks.classic-debug-style"))
-                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.classic-debug-style.description")))
-                                        .binding(defaults.classicDebugStyle, () -> config.classicDebugStyle, newVal -> config.classicDebugStyle = newVal)
                                         .controller(TickBoxControllerBuilder::create)
                                         .build())
                                 .option(Option.<Color>createBuilder()
@@ -288,6 +299,15 @@ public class OverlayTweaksConfig {
                                         .binding(10F, () -> config.suffocationOverlayBrightness, newVal -> config.suffocationOverlayBrightness = newVal)
                                         .controller(opt -> FloatSliderControllerBuilder.create(opt)
                                                 .formatValue(value -> Component.translatable(String.format("%,.0f", value)))
+                                                .range(0F, 100F)
+                                                .step(1F))
+                                        .build())
+                                .option(Option.<Float>createBuilder()
+                                        .name(Component.translatable("overlay-tweaks.nether-portal-opacity"))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.nether-portal-opacity.description")))
+                                        .binding(10F, () -> config.netherPortalOpacity, newVal -> config.netherPortalOpacity = newVal)
+                                        .controller(opt -> FloatSliderControllerBuilder.create(opt)
+                                                .formatValue(value -> Component.translatable(String.format("%,.0f", value) + "%"))
                                                 .range(0F, 100F)
                                                 .step(1F))
                                         .build())

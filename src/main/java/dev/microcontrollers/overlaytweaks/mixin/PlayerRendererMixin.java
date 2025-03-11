@@ -18,8 +18,7 @@ public class PlayerRendererMixin {
     @WrapOperation(method = "renderHand", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/geom/ModelPart;render(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;II)V"))
     private void renderTransparentArm(ModelPart instance, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, Operation<Void> original) {
         AbstractClientPlayer player = Minecraft.getInstance().player;
-        if (OverlayTweaksConfig.CONFIG.instance().handInvisibilityOpacity != 0F && OverlayTweaksConfig.CONFIG.instance().handInvisibilityOpacity != 100F && player != null && player.isInvisible())
-            instance.render(poseStack, buffer, packedLight, packedOverlay, ARGB.colorFromFloat(OverlayTweaksConfig.CONFIG.instance().handInvisibilityOpacity / 100F, 1F, 1F, 1F));
+        if (player != null && player.isInvisible()) instance.render(poseStack, buffer, packedLight, packedOverlay, ARGB.colorFromFloat(OverlayTweaksConfig.CONFIG.instance().handInvisibilityOpacity / 100F, 1F, 1F, 1F));
         else original.call(instance, poseStack, buffer, packedLight, packedOverlay);
     }
 }
