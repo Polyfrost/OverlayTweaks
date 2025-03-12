@@ -9,7 +9,6 @@
     "GuiMixin",
     "ItemInHandRendererMixin",
     "PlayerRendererMixin",
-    "PotionItemMixin",
     "ScreenEffectRendererMixin",
     "ScreenMixin",
     "ShieldSpecialRendererMixin",

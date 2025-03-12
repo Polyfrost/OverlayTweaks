@@ -62,7 +62,6 @@ public class OverlayTweaksConfig {
     @SerialEntry public Color shieldColorHigh = new Color(1F, 0F, 0F);
     @SerialEntry public Color shieldColorMid = new Color(0.75F, 0.37F, 0.2F);
     @SerialEntry public Color shieldColorLow = new Color(1F, 1F, 0F);
-    @SerialEntry public boolean potionGlint = false;
 
     public static Screen configScreen(Screen parent) {
         return YetAnotherConfigLib.create(CONFIG, ((defaults, config, builder) -> builder
@@ -358,18 +357,6 @@ public class OverlayTweaksConfig {
                                         .description(OptionDescription.of(Component.translatable("overlay-tweaks.shield-color-low.description")))
                                         .binding(defaults.shieldColorLow, () -> config.shieldColorLow, value -> config.shieldColorLow = value)
                                         .customController(opt -> new ColorController(opt, false))
-                                        .build())
-                                .build())
-
-                        // Potions
-
-                        .group(OptionGroup.createBuilder()
-                                .name(Component.translatable("overlay-tweaks.potions"))
-                                .option(Option.<Boolean>createBuilder()
-                                        .name(Component.translatable("overlay-tweaks.potion-glint"))
-                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.potion-glint.description")))
-                                        .binding(defaults.potionGlint, () -> config.potionGlint, newVal -> config.potionGlint = newVal)
-                                        .controller(TickBoxControllerBuilder::create)
                                         .build())
                                 .build())
                         .build())

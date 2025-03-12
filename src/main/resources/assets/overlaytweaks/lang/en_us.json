@@ -74,8 +74,5 @@
   "overlay-tweaks.shield-color-mid": "Shield Color Mid",
   "overlay-tweaks.shield-color-mid.description": "The cooldown in the middle of the timer.",
   "overlay-tweaks.shield-color-low": "Shield Color Low",
-  "overlay-tweaks.shield-color-low.description": "The color when the cooldown is about to end.",
-  "overlay-tweaks.potions": "Potions",
-  "overlay-tweaks.potion-glint": "Potion Glint",
-  "overlay-tweaks.potion-glint.description": "Add the potion glint that was removed in 1.19.4."
+  "overlay-tweaks.shield-color-low.description": "The color when the cooldown is about to end."
 }
