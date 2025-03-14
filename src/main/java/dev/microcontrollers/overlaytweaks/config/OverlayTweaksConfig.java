@@ -26,6 +26,7 @@ public class OverlayTweaksConfig {
 
     @SerialEntry public float containerOpacity = (208/255F) * 100F;
     @SerialEntry public float containerTextureOpacity = 100F;
+    @SerialEntry public boolean removeRecipeBookShift = false;
     @SerialEntry public boolean disableHandViewSway = false;
     @SerialEntry public boolean keepHand = false;
     @SerialEntry public float handInvisibilityOpacity = 0F;
@@ -93,6 +94,12 @@ public class OverlayTweaksConfig {
                                                 .formatValue(value -> Component.translatable(String.format("%,.0f", value) + "%"))
                                                 .range(0F, 100F)
                                                 .step(1F))
+                                        .build())
+                                .option(Option.<Boolean>createBuilder()
+                                        .name(Component.translatable("overlay-tweaks.remove-recipe-book-shift"))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.remove-recipe-book-shift.description")))
+                                        .binding(defaults.removeRecipeBookShift, () -> config.removeRecipeBookShift, newVal -> config.removeRecipeBookShift = newVal)
+                                        .controller(TickBoxControllerBuilder::create)
                                         .build())
                                 .build())
 

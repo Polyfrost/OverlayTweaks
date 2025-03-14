@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import java.util.function.Function;
 
 @Mixin(HorseInventoryScreen.class)
-public class HorseInventoryScreenMixin {
+public class HorseInventoryScreenMixin_ScreenOpacity {
     @Unique
     private GuiSpriteManager sprites = Minecraft.getInstance().getGuiSprites();
 

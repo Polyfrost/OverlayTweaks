@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import java.util.function.Function;
 
 @Mixin(CreativeModeInventoryScreen.class)
-public class CreativeModeInventoryScreenMixin {
+public class CreativeModeInventoryScreenMixin_ScreenOpacity {
     @WrapOperation(method = "renderBg", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Ljava/util/function/Function;Lnet/minecraft/resources/ResourceLocation;IIFFIIII)V"))
     private void creativeContainerOpacity(GuiGraphics instance, Function<ResourceLocation, RenderType> renderTypeGetter, ResourceLocation atlasLocation, int x, int y, float uOffset, float vOffset, int uWidth, int vHeight, int textureWidth, int textureHeight, Operation<Void> original) {
         if (ScreenHelper.INSTANCE.isDefault()) original.call(instance, renderTypeGetter, atlasLocation, x, y, uOffset, vOffset, uWidth, vHeight, textureWidth, textureHeight);
