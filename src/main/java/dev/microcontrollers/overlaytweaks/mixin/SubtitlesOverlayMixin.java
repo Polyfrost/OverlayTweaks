@@ -10,6 +10,6 @@ import org.spongepowered.asm.mixin.injection.At;
 public class SubtitlesOverlayMixin {
     @ModifyExpressionValue(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Options;getBackgroundColor(F)I"))
     private int modifySubtitleColor(int original) {
-        return OverlayTweaksConfig.CONFIG.instance().subtitleColor.getRGB();
+        return OverlayTweaksConfig.CONFIG.instance().subtitleColor.getRGB() == original ? original : OverlayTweaksConfig.CONFIG.instance().subtitleColor.getRGB();
     }
 }

@@ -23,8 +23,7 @@ import static net.minecraft.world.effect.MobEffects.FIRE_RESISTANCE;
  */
 @Mixin(ScreenEffectRenderer.class)
 public class ScreenEffectRendererMixin {
-    @Unique
-    private static boolean hasPushed = false;
+    @Unique private static boolean hasPushed = false;
 
     @Inject(method = "renderWater", at = @At("HEAD"), cancellable = true)
     private static void cancelWaterOverlay(Minecraft minecraft, PoseStack poseStack, MultiBufferSource bufferSource, CallbackInfo ci) {
