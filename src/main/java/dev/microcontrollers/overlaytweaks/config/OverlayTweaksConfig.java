@@ -27,6 +27,7 @@ public class OverlayTweaksConfig {
     @SerialEntry public float containerOpacity = (208/255F) * 100F;
     @SerialEntry public float containerTextureOpacity = 100F;
     @SerialEntry public boolean removeRecipeBookShift = false;
+    @SerialEntry public boolean clickOutOfContainers = false;
     @SerialEntry public boolean disableHandViewSway = false;
     @SerialEntry public boolean keepHand = false;
     @SerialEntry public float handInvisibilityOpacity = 0F;
@@ -99,6 +100,12 @@ public class OverlayTweaksConfig {
                                         .name(Component.translatable("overlay-tweaks.remove-recipe-book-shift"))
                                         .description(OptionDescription.of(Component.translatable("overlay-tweaks.remove-recipe-book-shift.description")))
                                         .binding(defaults.removeRecipeBookShift, () -> config.removeRecipeBookShift, newVal -> config.removeRecipeBookShift = newVal)
+                                        .controller(TickBoxControllerBuilder::create)
+                                        .build())
+                                .option(Option.<Boolean>createBuilder()
+                                        .name(Component.translatable("overlay-tweaks.click-out-of-containers"))
+                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.click-out-of-containers.description")))
+                                        .binding(defaults.clickOutOfContainers, () -> config.clickOutOfContainers, newVal -> config.clickOutOfContainers = newVal)
                                         .controller(TickBoxControllerBuilder::create)
                                         .build())
                                 .build())

@@ -9,6 +9,8 @@
   "overlay-tweaks.container-texture-opacity.description": "Set the transparency of container textures. Set to 0 to make it completely transparent.",
   "overlay-tweaks.remove-recipe-book-shift": "Remove Recipe Book Shift",
   "overlay-tweaks.remove-recipe-book-shift.description": "Don't shift the inventory when opening the recipe book. This may cause issues with some mods.",
+  "overlay-tweaks.click-out-of-containers": "Click Out of Containers",
+  "overlay-tweaks.click-out-of-containers.description": "Allows clicking outside the bounds of a container to close it.",
   "overlay-tweaks.hand": "Hand",
   "overlay-tweaks.disable-hand-view-sway": "Disable Hand View Sway",
   "overlay-tweaks.disable-hand-view-sway.description": "Disables the hand view sway when moving your mouse.",
