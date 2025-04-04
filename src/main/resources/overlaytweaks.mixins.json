@@ -10,7 +10,6 @@
     "GuiMixin",
     "ItemInHandRendererMixin",
     "PlayerRendererMixin",
-    "RecipeBookComponentMixin",
     "ScreenEffectRendererMixin",
     "ScreenMixin",
     "ShieldSpecialRendererMixin",
