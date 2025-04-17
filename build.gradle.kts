@@ -33,7 +33,6 @@ class LoaderData {
 class McData {
 	val version = property("mod.mc_version")
 	val dep = property("mod.mc_dep")
-	val targets = property("mod.mc_targets").toString().split(", ")
 }
 
 val mc = McData()
