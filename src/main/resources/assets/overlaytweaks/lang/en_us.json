@@ -1,5 +1,5 @@
 {
-  "modmenu.descriptionTranslation.overlaytweaks": "Small tweaks to Minecraft's overlays!",
+  "modmenu.descriptionTranslation.overlaytweaks": "${description}",
   "overlay-tweaks.overlay-tweaks": "Overlay Tweaks",
   "overlay-tweaks.miscellaneous": "Miscellaneous",
   "overlay-tweaks.containers": "Containers",
