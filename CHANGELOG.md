@@ -1,1 +1,1 @@
-- Add Feather, LabyMod, and Lunar to breaks list
+- Fix MixinSquared crash
