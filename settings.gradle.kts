@@ -26,9 +26,9 @@ stonecutter {
 			}
 		}
 
-		mc("1.21.5", listOf("fabric", "neoforge"))
+		mc("1.21.6", listOf("fabric"))
 
-		vcsVersion = "1.21.5-fabric"
+		vcsVersion = "1.21.6-fabric"
 	}
 }
 
