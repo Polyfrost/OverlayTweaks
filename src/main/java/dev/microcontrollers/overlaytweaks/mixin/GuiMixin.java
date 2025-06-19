@@ -3,7 +3,6 @@ package dev.microcontrollers.overlaytweaks.mixin;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
 import dev.microcontrollers.overlaytweaks.config.HeartDisplay;
 import dev.microcontrollers.overlaytweaks.config.OverlayTweaksConfig;
 import net.minecraft.client.gui.Gui;
@@ -48,10 +47,10 @@ public class GuiMixin {
         return opacity * OverlayTweaksConfig.CONFIG.instance().freezingOpacity / 100F;
     }
 
-    @WrapOperation(method = "renderSpyglassOverlay", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/ResourceLocation;IIFFIIII)V"))
-    private void changeSpyglassOpacity(GuiGraphics instance, RenderPipeline renderPipeline, ResourceLocation atlasLocation, int x, int y, float uOffset, float vOffset, int uWidth, int vHeight, int textureWidth, int textureHeight, Operation<Void> original) {
-        if (OverlayTweaksConfig.CONFIG.instance().spyglassOpacity == 100F) original.call(instance, renderPipeline, atlasLocation, x, y, uOffset, vOffset, uWidth, vHeight, textureWidth, textureHeight);
-        else instance.blit(renderPipeline, atlasLocation, x, y, uOffset, vOffset, uWidth, vHeight, textureWidth, textureHeight, ARGB.colorFromFloat(OverlayTweaksConfig.CONFIG.instance().spyglassOpacity / 100F,1F, 1F, 1F));
+    @WrapOperation(method = "renderSpyglassOverlay", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Ljava/util/function/Function;Lnet/minecraft/resources/ResourceLocation;IIFFIIII)V"))
+    private void changeSpyglassOpacity(GuiGraphics instance, Function<ResourceLocation, RenderType> renderTypeGetter, ResourceLocation atlasLocation, int x, int y, float uOffset, float vOffset, int uWidth, int vHeight, int textureWidth, int textureHeight, Operation<Void> original) {
+        if (OverlayTweaksConfig.CONFIG.instance().spyglassOpacity == 100F) original.call(instance, renderTypeGetter, atlasLocation, x, y, uOffset, vOffset, uWidth, vHeight, textureWidth, textureHeight);
+        else instance.blit(renderTypeGetter, atlasLocation, x, y, uOffset, vOffset, uWidth, vHeight, textureWidth, textureHeight, ARGB.colorFromFloat(OverlayTweaksConfig.CONFIG.instance().spyglassOpacity / 100F,1F, 1F, 1F));
     }
 
     @ModifyExpressionValue(method = "renderSpyglassOverlay", at = @At(value = "CONSTANT", args = "intValue=-16777216"))
