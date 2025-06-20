@@ -1,7 +1,6 @@
 package dev.microcontrollers.overlaytweaks.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.microcontrollers.overlaytweaks.config.OverlayTweaksConfig;
 import net.minecraft.client.renderer.ItemInHandRenderer;
@@ -10,7 +9,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import org.joml.Quaternionfc;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -23,11 +21,6 @@ public abstract class ItemInHandRendererMixin {
         if (itemStack.is(Items.SHIELD)) {
             poseStack.translate(0, OverlayTweaksConfig.CONFIG.instance().customShieldHeight, 0);
         }
-    }
-
-    @WrapWithCondition(method = "renderHandsWithItems", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;mulPose(Lorg/joml/Quaternionfc;)V"))
-    private boolean removeHandSway(PoseStack instance, Quaternionfc quaternionfc) {
-        return !OverlayTweaksConfig.CONFIG.instance().disableHandViewSway;
     }
 
     @ModifyExpressionValue(method = "renderArmWithItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/AbstractClientPlayer;isInvisible()Z"))

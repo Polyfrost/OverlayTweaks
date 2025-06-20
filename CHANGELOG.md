@@ -1,1 +1,1 @@
-- Fix MixinSquared crash
+- Removed "Disable Hand View Sway" (moved to Shake Tweaks)
