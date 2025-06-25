@@ -26,7 +26,6 @@ public class OverlayTweaksConfig {
 
     @SerialEntry public float containerOpacity = (208/255F) * 100F;
     @SerialEntry public float containerTextureOpacity = 100F;
-    @SerialEntry public boolean clickOutOfContainers = false;
     @SerialEntry public boolean keepHand = false;
     @SerialEntry public float handInvisibilityOpacity = 0F;
     @SerialEntry public HeartDisplay heartDisplayType = HeartDisplay.DEFAULT;
@@ -93,12 +92,6 @@ public class OverlayTweaksConfig {
                                                 .formatValue(value -> Component.translatable(String.format("%,.0f", value) + "%"))
                                                 .range(0F, 100F)
                                                 .step(1F))
-                                        .build())
-                                .option(Option.<Boolean>createBuilder()
-                                        .name(Component.translatable("overlay-tweaks.click-out-of-containers"))
-                                        .description(OptionDescription.of(Component.translatable("overlay-tweaks.click-out-of-containers.description")))
-                                        .binding(defaults.clickOutOfContainers, () -> config.clickOutOfContainers, newVal -> config.clickOutOfContainers = newVal)
-                                        .controller(TickBoxControllerBuilder::create)
                                         .build())
                                 .build())
 

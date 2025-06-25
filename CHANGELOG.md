@@ -1,1 +1,1 @@
-- Removed "Disable Hand View Sway" (moved to Shake Tweaks)
+- Removed "Click out of Containers" (moved to Click Out of Containers)

@@ -7,8 +7,6 @@
   "overlay-tweaks.container-background-opacity.description": "Set the transparency of container backgrounds. Set to 0 to make it completely transparent.",
   "overlay-tweaks.container-texture-opacity": "Container Texture Opacity",
   "overlay-tweaks.container-texture-opacity.description": "Set the transparency of container textures. Set to 0 to make it completely transparent.",
-  "overlay-tweaks.click-out-of-containers": "Click Out of Containers",
-  "overlay-tweaks.click-out-of-containers.description": "Allows clicking outside the bounds of a container to close it.",
   "overlay-tweaks.hand": "Hand",
   "overlay-tweaks.keep-hand-in-hidden-hud": "Keep Hand in Hidden HUD",
   "overlay-tweaks.keep-hand-in-hidden-hud.description": "Keep your hand/held item in view when hiding hud (pressing F1).",
