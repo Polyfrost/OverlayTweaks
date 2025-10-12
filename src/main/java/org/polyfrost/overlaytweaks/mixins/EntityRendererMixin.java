@@ -1,5 +1,6 @@
 package org.polyfrost.overlaytweaks.mixins;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.block.Block;
@@ -30,7 +31,7 @@ public class EntityRendererMixin {
         return constant * OverlayTweaks.config.waterDensity / 100f;
     }
 
-    @ModifyReturnValue(method = "renderHand", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/EntityRenderer;getFOVModifier(FZ)F"))
+    @ModifyExpressionValue(method = "renderHand", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/EntityRenderer;getFOVModifier(FZ)F"))
     private float getHandFOVModifier(float original, @Local(argsOnly = true) float partialTicks) {
         if (OverlayTweaks.config.renderHandWhenZoomed && ZoomHook.zoomed) {
             float f = 70f;
