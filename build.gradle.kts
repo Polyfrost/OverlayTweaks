@@ -1,169 +1,44 @@
+@file:Suppress("UnstableApiUsage", "PropertyName")
+
+import dev.deftu.gradle.utils.GameSide
+
 plugins {
-	id("dev.architectury.loom") version "1.7.+"
+    java
+    kotlin("jvm")
+    id("dev.deftu.gradle.multiversion")
+    id("dev.deftu.gradle.tools")
+    id("dev.deftu.gradle.tools.resources")
+    id("dev.deftu.gradle.tools.bloom")
+    id("dev.deftu.gradle.tools.shadow")
+    id("dev.deftu.gradle.tools.minecraft.loom")
+    id("dev.deftu.gradle.tools.minecraft.releases")
 }
 
-class ModData {
-	val id = property("mod.id").toString()
-	val name = property("mod.name")
-	val version = property("mod.version")
-	val group = property("mod.group").toString()
-	val description = property("mod.description")
-	val source = property("mod.source")
-	val issues = property("mod.issues")
-	val license = property("mod.license").toString()
-	val modrinth = property("mod.modrinth")
-	val curseforge = property("mod.curseforge")
-	val kofi = property("mod.kofi")
-	val discord = property("mod.discord")
-}
+toolkitLoomHelper {
+    useOneConfig {
+        version = "1.0.0-alpha.170"
+        loaderVersion = "1.1.0-alpha.53"
 
-class Dependencies {
-	val fabricApiVersion = property("deps.fabric_api_version")
-	val modmenuVersion = property("deps.modmenu_version")
-	val yaclVersion = property("deps.yacl_version")
-	val devauthVersion = property("deps.devauth_version")
-}
+        usePolyMixin = true
+        polyMixinVersion = "0.8.4+build.7"
 
-class LoaderData {
-	val loader = loom.platform.get().name.lowercase()
-	val isFabric = loader == "fabric"
-	val isNeoforge = loader == "neoforge"
-}
+        applyLoaderTweaker = true
 
-class McData {
-	val version = property("mod.mc_version")
-	val dep = property("mod.mc_dep")
-}
+        for (module in arrayOf("commands", "config", "config-impl", "events", "internal", "ui", "utils")) {
+            +module
+        }
+    }
 
-val mc = McData()
-val mod = ModData()
-val deps = Dependencies()
-val loader = LoaderData()
+    useDevAuth("1.2.1")
+    useMixinExtras("0.5.0")
 
-version = "${mod.version}+${mc.version}-${loader.loader}"
-group = mod.group
-base { archivesName.set(mod.id) }
+    disableRunConfigs(GameSide.SERVER)
 
-stonecutter.const("fabric", loader.isFabric)
-stonecutter.const("neoforge", loader.isNeoforge)
+    if (!mcData.isNeoForge) {
+        useMixinRefMap(modData.id)
+    }
 
-loom {
-	silentMojangMappingsLicense()
-
-	runConfigs.all {
-		ideConfigGenerated(stonecutter.current.isActive)
-		runDir = "../../run"
-	}
-
-	runConfigs.remove(runConfigs["server"])
-}
-
-repositories {
-	maven("https://maven.parchmentmc.org") // Parchment
-	maven("https://maven.isxander.dev/releases") // YACL
-	maven("https://thedarkcolour.github.io/KotlinForForge") // Kotlin for Forge - required by YACL
-	maven("https://maven.terraformersmc.com") // Mod Menu
-	maven("https://maven.neoforged.net/releases") // NeoForge
-	maven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1") // DevAuth
-}
-
-dependencies {
-	minecraft("com.mojang:minecraft:${mc.version}")
-
-	val yaclMcVersion = when (mc.version) {
-		"1.21.1" -> "1.21"
-		"1.21.3" -> "1.21.2"
-		else -> mc.version
-	}
-
-	@Suppress("UnstableApiUsage")
-	mappings(loom.layered {
-		// Mojmap mappings
-		officialMojangMappings()
-
-		// Parchment mappings (it adds parameter mappings & javadoc)
-		optionalProp("deps.parchment_version") {
-			parchment("org.parchmentmc.data:parchment-${property("mod.mc_version")}:$it@zip")
-		}
-	})
-
-	modRuntimeOnly("me.djtheredstoner:DevAuth-${loader.loader}:${deps.devauthVersion}")
-
-	if (loader.isFabric) {
-		modImplementation("net.fabricmc:fabric-loader:${property("deps.fabric_loader")}")
-		modImplementation("dev.isxander:yet-another-config-lib:${deps.yaclVersion}+${yaclMcVersion}-${loader.loader}")
-		modImplementation("com.terraformersmc:modmenu:${deps.modmenuVersion}")
-		if (deps.fabricApiVersion != "[VERSIONED]") modImplementation("net.fabricmc.fabric-api:fabric-api:${deps.fabricApiVersion}")
-	} else if (loader.isNeoforge) {
-		"neoForge"("net.neoforged:neoforge:${findProperty("deps.neoforge")}")
-		implementation("dev.isxander:yet-another-config-lib:${deps.yaclVersion}+${yaclMcVersion}-${loader.loader}") {isTransitive = false}
-	}
-}
-
-java {
-	val java = if (stonecutter.eval(
-			stonecutter.current.version,
-			">=1.20.6"
-		)
-	) JavaVersion.VERSION_21 else JavaVersion.VERSION_17
-	sourceCompatibility = java
-	targetCompatibility = java
-}
-
-tasks.processResources {
-	val props = buildMap {
-		put("id", mod.id)
-		put("name", mod.name)
-		put("version", mod.version)
-		put("mcdep", mc.dep)
-		put("description", mod.description)
-		put("source", mod.source)
-		put("issues", mod.issues)
-		put("license", mod.license)
-		put("modrinth", mod.modrinth)
-		put("curseforge", mod.curseforge)
-		put("kofi", mod.kofi)
-		put("discord", mod.discord)
-		put("modmenu_version", deps.modmenuVersion)
-		put("yacl_version", deps.yaclVersion)
-
-		if (loader.isNeoforge) {
-			put("forgeConstraint", findProperty("modstoml.forge_constraint"))
-		}
-		if (mc.version == "1.20.1" || mc.version == "1.20.4") {
-			put("forge_id", loader.loader)
-		}
-	}
-
-	props.forEach(inputs::property)
-
-	if (loader.isFabric) {
-		filesMatching("fabric.mod.json") { expand(props) }
-		exclude(listOf("META-INF/mods.toml", "META-INF/neoforge.mods.toml"))
-	}
-
-	if (loader.isNeoforge) {
-		if (mc.version == "1.20.4") {
-			filesMatching("META-INF/mods.toml") { expand(props) }
-			exclude("fabric.mod.json", "META-INF/neoforge.mods.toml")
-		} else {
-			filesMatching("META-INF/neoforge.mods.toml") { expand(props) }
-			exclude("fabric.mod.json", "META-INF/mods.toml")
-		}
-	}
-}
-
-if (stonecutter.current.isActive) {
-	rootProject.tasks.register("buildActive") {
-		group = "project"
-		dependsOn(tasks.named("build"))
-	}
-}
-
-@Suppress("TYPE_MISMATCH", "UNRESOLVED_REFERENCE")
-fun <T> optionalProp(property: String, block: (String) -> T?): T? =
-	findProperty(property)?.toString()?.takeUnless { it.isBlank() }?.let(block)
-
-fun isPropDefined(property: String): Boolean {
-	return property(property)?.toString()?.isNotBlank() ?: false
+    if (mcData.isForge) {
+        useForgeMixin(modData.id)
+    }
 }
