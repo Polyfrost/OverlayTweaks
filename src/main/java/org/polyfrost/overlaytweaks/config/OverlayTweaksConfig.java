@@ -20,16 +20,11 @@ public class OverlayTweaksConfig extends Config {
     // Miscellaneous
 
     @Slider(
-        title = "Container Opacity (%)",
-        description = "Change the opacity of supported containers.\nIncludes Chests & Survival Inventory."
+        title = "Pumpkin Overlay Opacity (%)",
+        description = "Change the opacity of the pumpkin overlay.",
+        min = 0, max = 100
     )
-    public float containerOpacity = 100F;
-
-    @Slider(
-        title = "Container Background Opacity (%)",
-        description = "Change the opacity of the dark background inside a container, or remove it completely. By default, this is 81.5%."
-    )
-    public float containerBackgroundOpacity = (208/255F) * 100F;
+    public int pumpkinOverlayOpacity = 100;
 
     @Switch(
         title = "Render Hand While Zoomed",
