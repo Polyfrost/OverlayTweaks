@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
@@ -28,5 +29,15 @@ public class GuiIngameMixin {
     private void overlaytweaks$modifyPortalColor(Args args) {
         float alpha = (float) OverlayTweaks.config.netherPortalOpacity / 100;
         args.set(3, (float) args.get(3) * alpha);
+    }
+
+    @Inject(method = "renderPumpkinOverlay", at = @At("HEAD"), cancellable = true)
+    private void patcher$cancelPumpkinOverlay(ScaledResolution scaledRes, CallbackInfo ci) {
+        if (OverlayTweaks.config.pumpkinOverlayOpacity == 0) ci.cancel();
+    }
+
+    @ModifyArg(method = "renderPumpkinOverlay", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;color(FFFF)V"), index = 3)
+    private float patcher$modifyPumpkinOpacity(float alpha) {
+        return OverlayTweaks.config.pumpkinOverlayOpacity / 100f;
     }
 }
