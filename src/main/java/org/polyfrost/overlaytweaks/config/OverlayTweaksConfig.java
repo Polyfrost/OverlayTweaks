@@ -8,6 +8,7 @@ import org.polyfrost.overlaytweaks.OverlayTweaks;
 public class OverlayTweaksConfig extends Config {
     public OverlayTweaksConfig() {
         super(OverlayTweaks.ID + ".json", OverlayTweaks.NAME, Category.QOL);
+        loadFrom("patcher.toml");
     }
 
     @Slider(
