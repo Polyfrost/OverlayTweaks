@@ -1,7 +1,6 @@
 package org.polyfrost.overlaytweaks.mixins;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -36,9 +35,9 @@ public class EntityRendererMixin {
         if (OverlayTweaks.config.renderHandWhenZoomed && ZoomHook.zoomed) {
             float f = 70f;
             //#if MC==10809
-            Block block = ActiveRenderInfo.getBlockAtEntityViewpoint(mc.theWorld, mc.thePlayer, partialTicks);
+            Block block = ActiveRenderInfo.getBlockAtEntityViewpoint(this.mc.theWorld, this.mc.thePlayer, partialTicks);
             //#else
-            //$$ IBlockState block = ActiveRenderInfo.getBlockStateAtEntityViewpoint(mc.world, mc.player, partialTicks);
+            //$$ IBlockState block = ActiveRenderInfo.getBlockStateAtEntityViewpoint(this.mc.world, this.mc.player, partialTicks);
             //#endif
 
             if (block.getMaterial() == Material.water) {
