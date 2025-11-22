@@ -5,6 +5,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.potion.Potion;
+//#if MC==11202
+//$$ import net.minecraft.init.MobEffects;
+//#endif
 import net.minecraft.util.MathHelper;
 import org.polyfrost.overlaytweaks.OverlayTweaks;
 import org.spongepowered.asm.mixin.Final;
@@ -60,7 +63,10 @@ public class ItemRendererMixin {
         GlStateManager.color(1, 1, 1, 1);
     }
 
-    @Inject(method = "renderFireInFirstPerson", at = @At("TAIL"))
+    @Inject(
+        method = "renderFireInFirstPerson",
+        at = @At("TAIL")
+    )
     private void overlaytweaks$popMatrix(CallbackInfo ci) {
         GlStateManager.popMatrix();
     }
@@ -77,8 +83,13 @@ public class ItemRendererMixin {
     @Unique
     private float overlaytweaks$getFireOpacity() {
         float fireOpacity = OverlayTweaks.config.fireOverlayOpacity / 100f;
-        if (OverlayTweaks.config.hideFireOverlayWithFireResistance && mc.thePlayer.isPotionActive(Potion.fireResistance)) {
-            int duration = mc.thePlayer.getActivePotionEffect(Potion.fireResistance).getDuration();
+        //#if MC==11202
+        //$$ Potion fireResistancePotion = MobEffects.FIRE_RESISTANCE;
+        //#else
+        Potion fireResistancePotion = Potion.fireResistance;
+        //#endif
+        if (OverlayTweaks.config.hideFireOverlayWithFireResistance && this.mc.thePlayer.isPotionActive(fireResistancePotion)) {
+            int duration = this.mc.thePlayer.getActivePotionEffect(fireResistancePotion).getDuration();
             fireOpacity *= duration > 100 ? 0.0F : 0.5F - MathHelper.sin(((float) duration - this.overlaytweaks$partialTicksCopy) * (float) Math.PI * 0.2F) * 0.5F;
         }
         return fireOpacity;
