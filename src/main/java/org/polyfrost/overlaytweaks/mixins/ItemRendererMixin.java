@@ -5,11 +5,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.potion.Potion;
-//#if MC==11202 && FORGE
+//#if MC==11202
 //$$ import net.minecraft.init.MobEffects;
-//#endif
-//#if MC==11202 && FABRIC
-//$$ import net.minecraft.potion.Potions;
 //#endif
 import net.minecraft.util.MathHelper;
 import org.polyfrost.overlaytweaks.OverlayTweaks;
@@ -43,15 +40,7 @@ public class ItemRendererMixin {
         this.overlaytweaks$partialTicksCopy = partialTicks;
     }
 
-    @Inject(
-        //#if FORGE || MC==10809
-        method = "renderFireInFirstPerson",
-        //#elseif FABRIC
-        //$$ method = "method_14680",
-        //#endif
-        at = @At("HEAD"),
-        cancellable = true
-    )
+    @Inject(method = "renderFireInFirstPerson", at = @At("HEAD"), cancellable = true)
     private void overlaytweaks$changeHeightAndFixOverlay(CallbackInfo ci) {
         if (this.mc.getTextureMapBlocks().getAtlasSprite("minecraft:blocks/fire_layer_1").getFrameCount() == 0) {
             ci.cancel();
@@ -62,38 +51,20 @@ public class ItemRendererMixin {
         GlStateManager.translate(0f, OverlayTweaks.config.fireOverlayHeight, 0f);
     }
 
-    @Inject(
-        //#if FORGE || MC==10809
-        method = "renderFireInFirstPerson",
-        //#elseif FABRIC
-        //$$ method = "method_14680",
-        //#endif
-        at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;pushMatrix()V", shift = At.Shift.AFTER)
-    )
+    @Inject(method = "renderFireInFirstPerson", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;pushMatrix()V", shift = At.Shift.AFTER))
     private void overlaytweaks$enableFireOpacity(CallbackInfo ci) {
         float fireOpacity = overlaytweaks$getFireOpacity();
         if (fireOpacity == 1.0f) return;
         GlStateManager.color(1, 1, 1, fireOpacity);
     }
 
-    @Inject(
-        //#if FORGE || MC==10809
-        method = "renderFireInFirstPerson",
-        //#elseif FABRIC
-        //$$ method = "method_14680",
-        //#endif
-        at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;popMatrix()V")
-    )
+    @Inject(method = "renderFireInFirstPerson", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;popMatrix()V"))
     private void overlaytweaks$disableFireOpacity(CallbackInfo ci) {
         GlStateManager.color(1, 1, 1, 1);
     }
 
     @Inject(
-        //#if FORGE || MC==10809
         method = "renderFireInFirstPerson",
-        //#elseif FABRIC
-        //$$ method = "method_14680",
-        //#endif
         at = @At("TAIL")
     )
     private void overlaytweaks$popMatrix(CallbackInfo ci) {
@@ -112,12 +83,10 @@ public class ItemRendererMixin {
     @Unique
     private float overlaytweaks$getFireOpacity() {
         float fireOpacity = OverlayTweaks.config.fireOverlayOpacity / 100f;
-        //#if MC==10809
-        Potion fireResistancePotion = Potion.fireResistance;
-        //#elseif FABRIC
-        //$$ Potion fireResistancePotion = Potions.FIRE_RESISTANCE;
-        //#else
+        //#if MC==11202
         //$$ Potion fireResistancePotion = MobEffects.FIRE_RESISTANCE;
+        //#else
+        Potion fireResistancePotion = Potion.fireResistance;
         //#endif
         if (OverlayTweaks.config.hideFireOverlayWithFireResistance && this.mc.thePlayer.isPotionActive(fireResistancePotion)) {
             int duration = this.mc.thePlayer.getActivePotionEffect(fireResistancePotion).getDuration();

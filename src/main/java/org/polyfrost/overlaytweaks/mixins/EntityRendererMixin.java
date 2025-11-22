@@ -4,11 +4,8 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-//#if MC==11202 && FORGE
+//#if MC==11202
 //$$ import net.minecraft.block.state.IBlockState;
-//#endif
-//#if MC==11202 && FABRIC
-//$$ import net.minecraft.block.BaseBlockState;
 //#endif
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ActiveRenderInfo;
@@ -42,10 +39,8 @@ public class EntityRendererMixin {
             float f = 70f;
             //#if MC==10809
             Block block = ActiveRenderInfo.getBlockAtEntityViewpoint(this.mc.theWorld, this.mc.thePlayer, partialTicks);
-            //#elseif FORGE
-            //$$ IBlockState block = ActiveRenderInfo.getBlockStateAtEntityViewpoint(this.client.world, this.client.player, partialTicks);
-            //#elseif FABRIC
-            //$$ BaseBlockState block = ActiveRenderInfo.getBlockStateAtEntityViewpoint(this.client.world, this.client.player, partialTicks);
+            //#else
+            //$$ IBlockState block = ActiveRenderInfo.getBlockStateAtEntityViewpoint(this.mc.world, this.mc.player, partialTicks);
             //#endif
 
             if (block.getMaterial() == Material.water) {
